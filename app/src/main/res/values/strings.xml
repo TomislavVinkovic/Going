@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Going</string>
+    <string name="title_activity_splash">SplashActivity</string>
+    <string name="title_activity_greeting">GreetingActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_register">RegisterActivity</string>
+
+    <string name="default_web_client_id" translatable="false">966209440865-uji8aibpnplu29hkk4g0fc9onckh082t.apps.googleusercontent.com</string>
+</resources>
