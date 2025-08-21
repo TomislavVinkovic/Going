@@ -35,9 +35,8 @@ import com.example.going.R
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.launch
-
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.stringResource
 
 
 @Composable
@@ -95,8 +94,12 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
             onDismissRequest = {
                 showErrorDialog = false
             },
-            title = { Text("Greška pri prijavi") },
-            text = { Text(googleSignInState.isError ?: "Došlo je do nepoznate greške.") },
+            title = { Text(stringResource(R.string.login_failure)) },
+            text = {
+                Text(
+                    googleSignInState.isError ?: stringResource(R.string.unknown_failure)
+                )
+           },
             confirmButton = {
                 Button(
                     onClick = {
@@ -104,7 +107,7 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
                         authViewModel.clearGoogleLoginState()
                     }
                 ) {
-                    Text("U redu")
+                    Text(stringResource(R.string.ok))
                 }
             }
         )
@@ -133,10 +136,9 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            // Todo: Add translations
             Text(
-                "Going",
-                style= MaterialTheme.typography.headlineLarge
+                stringResource( R.string.app_name),
+                style=MaterialTheme.typography.headlineLarge
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -147,7 +149,7 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Prijavi se E-mail adresom")
+                Text(stringResource(R.string.greeting_screen_email_login))
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -158,7 +160,7 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Prijavi se Google računom")
+                Text(stringResource(R.string.greeting_screen_google_login))
             }
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -169,7 +171,7 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text("Nemaš korisnički račun? Registriraj se!")
+                Text(stringResource(R.string.greeting_screen_login_invitation))
             }
         }
     }

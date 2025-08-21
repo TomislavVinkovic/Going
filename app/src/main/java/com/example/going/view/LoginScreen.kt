@@ -1,8 +1,5 @@
 package com.example.going.view
 
-import android.R.attr.onClick
-import android.R.attr.password
-import android.R.attr.singleLine
 import android.util.Patterns
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
@@ -30,7 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.modifier.modifierLocalOf
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -38,6 +34,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.going.util.Screen
 import com.example.going.viewmodel.AuthViewModel
+import com.example.going.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -77,20 +74,18 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
         AlertDialog(
             onDismissRequest = {
                 showErrorDialog = false
-                // Resetiraj stanje greške u ViewModelu da se dijalog ne prikaže ponovno
-                // authViewModel.clearLoginError()
             },
-            title = { Text("Greška pri prijavi") },
-            text = { Text(loginState.isError ?: "Došlo je do nepoznate greške.") },
+            title = { Text(stringResource(R.string.login_failure)) },
+            text = {
+                Text(loginState.isError?: stringResource(R.string.unknown_failure))
+            },
             confirmButton = {
                 Button(
                     onClick = {
                         showErrorDialog = false
-                        // Resetiraj stanje greške u ViewModelu
-                        // authViewModel.clearLoginError()
                     }
                 ) {
-                    Text("U redu")
+                    Text(stringResource(R.string.ok))
                 }
             }
         )
@@ -108,9 +103,8 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
             verticalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()
         ) {
-            // TODO: Add translations
             Text(
-                text = "Dobrodošli natrag",
+                text = stringResource(R.string.login_screen_title),
                 style = MaterialTheme.typography.headlineMedium
             )
 
@@ -119,14 +113,14 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
             OutlinedTextField(
                 value=email,
                 onValueChange = {email = it},
-                label = {Text("Email adresa")},
+                label = {Text(stringResource(R.string.login_screen_email))},
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 isError = !isEmailValid,
                 supportingText = {
                     if(!isEmailValid) {
                         Text(
-                            "E-mail adresa nije valjana"
+                            stringResource(R.string.email_validation_error)
                         )
                     }
                 },
@@ -138,7 +132,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
             OutlinedTextField(
                 value=password,
                 onValueChange = {password=it},
-                label={Text("Lozinka")},
+                label={Text(stringResource(R.string.login_screen_password))},
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                 visualTransformation = PasswordVisualTransformation(),
@@ -146,7 +140,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
                 supportingText = {
                     if(!isPasswordValid) {
                         Text(
-                            "Lozinka mora imati barem 8 znakova, 1 veliko slovo, 1 broj, i jedan spec. znak"
+                            stringResource(R.string.password_validation_error)
                         )
                     }
                 },
@@ -164,7 +158,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
                 enabled = !loginState.isLoading,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(text = "Prijavi se")
+                Text(text = stringResource(R.string.login_screen_login))
             }
 
             Spacer(modifier = Modifier.height(8.dp) )

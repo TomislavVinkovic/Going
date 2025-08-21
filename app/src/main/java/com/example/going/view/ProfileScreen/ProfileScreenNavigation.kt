@@ -10,13 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.going.util.MainScreen
 import com.example.going.util.ProfileScreen
-import com.example.going.view.FriendsScreen.FriendsScreen
-import com.example.going.view.MapScreen.MapScreen
-import com.example.going.view.MyEventsScreen.MyEventsScreen
-import com.example.going.view.NotificationsScreen.NotificationsScreen
-import com.example.going.view.ProfileScreen.ProfileScreen
 import com.example.going.viewmodel.ProfileViewModel
 
 @Composable

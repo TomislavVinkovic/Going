@@ -18,4 +18,30 @@
     <string name="profile_screen_username_placeholder">korisnicko_ime</string>
     <string name="profile_screen_edit_profile_picture">Dodaj ili uredi sliku profila</string>
     <string name="profile_screen_edit_profile_info">Uredi podatke o profilu</string>
+    <string name="profile_screen_profile_public">Želim da mi profil bude javno vidljiv</string>
+
+    <!-- Translations for the login screen -->
+    <string name="login_screen_title">Dobrodošli natrag</string>
+    <string name="login_screen_email">E-mail</string>
+    <string name="login_screen_password">Lozinka</string>
+    <string name="login_screen_login">Prijava</string>
+
+    <!-- Translations for the Greeting screen -->
+    <string name="greeting_screen_email_login">Prijavi se e-mail adresom</string>
+    <string name="greeting_screen_google_login">Prijavi se svojim Google računom</string>
+    <string name="greeting_screen_login_invitation">Nemaš korisnički račun? Registriraj se!</string>
+
+    <!-- Data operations -->
+    <string name="data_update_success">Radnja uspješno obavljena</string>
+    <string name="data_update_failure">Radnja nije uspješna</string>
+    <string name="login_failure">Greška pri prijavi</string>
+    <string name="unknown_failure">Nepoznata greška</string>
+
+    <!-- Validation error messages -->
+    <string name="firstname_lastname_validation_error">Ime/prezime moraju biti dugi barem dva znaka i započinjati velikim slovom</string>
+    <string name="email_validation_error">E-mail adresa nije valjana</string>
+    <string name="password_validation_error">Lozinka mora imati barem 8 znakova, 1 veliko slovo, 1 broj, i jedan spec. znak</string>
+
+    <!-- Misc strings -->
+    <string name="ok">U redu</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.example.going.view.ProfileScreen
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -62,31 +63,17 @@ fun ProfileScreen(
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
+            horizontalAlignment = Alignment.Start,
             verticalArrangement = Arrangement.Top
         ) {
-            ProfileCard(isLoading, userData)
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            TextButton(
-                onClick = {}
-            ) {
-                Text(stringResource(R.string.profile_screen_edit_profile_picture))
-            }
-            TextButton(
-                onClick = {
-                    navController.navigate(ProfileScreen.EditProfileInformation.route)
-                }
-            ) {
-                Text(stringResource(R.string.profile_screen_edit_profile_info))
-            }
+            ProfileCard(navController, isLoading, userData)
         }
     }
 }
 
 @Composable
 fun ProfileCard(
+    navController: NavController,
     isLoading: Boolean,
     userData: ProfileUserData?
 ) {
@@ -107,6 +94,9 @@ fun ProfileCard(
                     model = userData?.avatarUrl,
                     contentDescription = stringResource(R.string.profile_screen_profile_picture),
                     modifier = Modifier
+                        .clickable(onClick = {
+                            // TODO: Implement profile picture updates
+                        })
                         .size(80.dp)
                         .clip(CircleShape),
                     contentScale = ContentScale.Crop,
@@ -128,6 +118,14 @@ fun ProfileCard(
                         color = Color.Gray
                     )
                 }
+            }
+            TextButton(
+                onClick = {
+                    navController.navigate(ProfileScreen.EditProfileInformation.route)
+                },
+                modifier = Modifier.padding(16.dp, 8.dp)
+            ) {
+                Text(stringResource(R.string.profile_screen_edit_profile_info))
             }
         }
     }

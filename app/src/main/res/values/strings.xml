@@ -23,4 +23,33 @@
     <string name="profile_screen_username_placeholder">user_name</string>
     <string name="profile_screen_edit_profile_picture">Add or edit profile picture</string>
     <string name="profile_screen_edit_profile_info">Edit profile information</string>
+    <string name="profile_screen_profile_public">I want my profile to be publicly visible</string>
+
+    <!-- Translations for the login screen -->
+    <string name="login_screen_title">Welcome back</string>
+    <string name="login_screen_email">E-mail</string>
+    <string name="login_screen_password">Password</string>
+    <string name="login_screen_login">Log in</string>
+
+    <!-- Translations for the Greeting screen -->
+    <string name="greeting_screen_email_login">Login with e-mail</string>
+    <string name="greeting_screen_google_login">Login with Google</string>
+    <string name="greeting_screen_login_invitation">Do not have a user account? Register for one now!</string>
+
+    <!-- Data operations -->
+    <string name="data_update_success">Operation successful</string>
+    <string name="data_update_failure">Operation failed</string>
+    <string name="login_failure">Login error</string>
+    <string name="unknown_failure">Unknown error</string>
+
+     <!-- Validation error messages -->
+    <string name="firstname_lastname_validation_error">First/last name must be at least 2 characters long and have a capital letter at the start</string>
+    <string name="email_validation_error">E-mail address is invalid</string>
+    <string name="password_validation_error">
+        Password must be at least 8 characters long, and contain at least one uppercase letter, one lowercase letter, one number and one special character
+    </string>
+
+    <!-- Misc strings -->
+    <string name="ok">OK</string>
+
 </resources>

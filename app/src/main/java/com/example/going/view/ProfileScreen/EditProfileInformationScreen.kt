@@ -1,6 +1,5 @@
 package com.example.going.view.ProfileScreen
 
-import android.R.attr.password
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,12 +15,10 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -33,7 +30,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
+import com.example.going.R
 import com.example.going.viewmodel.EditProfileUserData
 import kotlinx.coroutines.launch
 
@@ -43,6 +43,7 @@ fun EditProfileInformationScreen(
     profileViewModel: ProfileViewModel,
     snackbarHostState: SnackbarHostState
 ) {
+    val context = LocalContext.current
 
     val userData by profileViewModel.userData.collectAsState()
     val updateUserDataState by profileViewModel.updateUserDataState.collectAsState()
@@ -52,8 +53,6 @@ fun EditProfileInformationScreen(
     var firstname by remember {mutableStateOf(userData?.firstname ?: "")}
     var lastname by remember {mutableStateOf(userData?.lastname ?: "")}
     var isPubliclyInterested by remember {mutableStateOf(userData?.isPubliclyInterested ?: true)}
-
-    var showConfirmationDialog by remember{mutableStateOf(false)}
 
     var isFirstnamevalid by remember {mutableStateOf(true)}
     var isLastnamevalid by remember {mutableStateOf(true)}
@@ -72,9 +71,8 @@ fun EditProfileInformationScreen(
                 verticalArrangement = Arrangement.Center,
                 modifier = Modifier.fillMaxWidth()
             ) {
-                // TODO: Add translations
                 Text(
-                    "Uredi informacije o profilu",
+                    stringResource(R.string.profile_screen_edit_profile_info),
                     style = MaterialTheme.typography.headlineMedium
                 )
 
@@ -91,7 +89,7 @@ fun EditProfileInformationScreen(
                     supportingText = {
                         if(!isFirstnamevalid) {
                             Text(
-                                "Ime mora imati barem 2 slova, od kojih prvo mora biti veliko"
+                                stringResource(R.string.firstname_lastname_validation_error)
                             )
                         }
                     }
@@ -110,7 +108,7 @@ fun EditProfileInformationScreen(
                     supportingText = {
                         if(!isLastnamevalid) {
                             Text(
-                                "Prezime mora imati barem 2 slova, od kojih prvo mora biti veliko"
+                                stringResource(R.string.firstname_lastname_validation_error)
                             )
                         }
                     }
@@ -126,7 +124,7 @@ fun EditProfileInformationScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     Text(
-                        text = "Želim da mi je profil javno vidljiv",
+                        text = stringResource(R.string.profile_screen_profile_public),
                         modifier = Modifier.weight(1f)
                     )
                     Spacer(modifier = Modifier.width(8.dp))
@@ -134,13 +132,13 @@ fun EditProfileInformationScreen(
                         checked = isPubliclyInterested,
                         onCheckedChange = { newCheckedState ->
                             isPubliclyInterested = newCheckedState
-                            showConfirmationDialog = true
                         }
                     )
                 }
                 Spacer(modifier = Modifier.height(32.dp))
                 Button(
                     onClick = {
+                        val successMessage = context.getString(R.string.data_update_success)
                         // Launch a coroutine to handle the entire update-then-navigate flow
                         scope.launch {
                             val success = profileViewModel.updateProfileInformation(
@@ -153,9 +151,7 @@ fun EditProfileInformationScreen(
 
                             if (success) {
                                 launch {
-                                    snackbarHostState.showSnackbar(
-                                        "Podaci uspješno ažurirani!"
-                                    )
+                                    snackbarHostState.showSnackbar(successMessage)
                                 }
                                 navController.popBackStack()
                             }
