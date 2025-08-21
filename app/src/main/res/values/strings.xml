@@ -1,9 +1,26 @@
 <resources>
     <string name="app_name">Going</string>
-    <string name="title_activity_splash">SplashActivity</string>
-    <string name="title_activity_greeting">GreetingActivity</string>
-    <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_register">RegisterActivity</string>
 
     <string name="default_web_client_id" translatable="false">966209440865-uji8aibpnplu29hkk4g0fc9onckh082t.apps.googleusercontent.com</string>
+
+    <!-- Screen Titles for Bottom Navigation -->
+    <string name="screen_title_map">Map</string>
+    <string name="screen_title_my_events">My events</string>
+    <string name="screen_title_friends">Friends</string>
+    <string name="screen_title_notifications">Notifications</string>
+    <string name="screen_title_profile">Profile</string>
+
+    <!-- Placeholder Text for Screens -->
+    <string name="placeholder_map">This screen will hold a map of events</string>
+    <string name="placeholder_my_events">This screen will hold all events the user is interested in</string>
+    <string name="placeholder_friends">This screen will show the friends activity feed</string>
+    <string name="placeholder_notifications">This screen will show user notifications</string>
+    <string name="placeholder_profile">This screen will contain the user profile information</string>
+
+    <!-- Tranaslations for the profile screen -->
+    <string name="profile_screen_profile_picture">Profile picture</string>
+    <string name="profile_screen_user">User</string>
+    <string name="profile_screen_username_placeholder">user_name</string>
+    <string name="profile_screen_edit_profile_picture">Add or edit profile picture</string>
+    <string name="profile_screen_edit_profile_info">Edit profile information</string>
 </resources>

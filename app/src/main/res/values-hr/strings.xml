@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Going</string>
+    <string name="screen_title_map">Karta</string>
+    <string name="screen_title_my_events">Moji eventi</string>
+    <string name="screen_title_friends">Prijatelji</string>
+    <string name="screen_title_notifications">Obavijesti</string>
+    <string name="screen_title_profile">Profil</string>
+    <string name="placeholder_map">Ovdje će biti prikazana mapa s eventima.</string>
+    <string name="placeholder_my_events">Ovdje će biti prikazana lista evenata za koje je korisnik zainteresiran.</string>
+    <string name="placeholder_friends">Ovdje će biti prikazan feed aktivnosti prijatelja.</string>
+    <string name="placeholder_notifications">Ovdje će biti prikazane obavijesti.</string>
+    <string name="placeholder_profile">Ovdje će korisnik moći uređivati svoj profil.</string>
+
+    <!-- Tranaslations for the profile screen -->
+    <string name="profile_screen_profile_picture">Profilna slika</string>
+    <string name="profile_screen_user">Korisnik</string>
+    <string name="profile_screen_username_placeholder">korisnicko_ime</string>
+    <string name="profile_screen_edit_profile_picture">Dodaj ili uredi sliku profila</string>
+    <string name="profile_screen_edit_profile_info">Uredi podatke o profilu</string>
+</resources>

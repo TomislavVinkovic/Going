@@ -1,5 +1,6 @@
 [versions]
 agp = "8.12.0"
+coilCompose = "2.6.0"
 coreSplashscreen = "1.0.1"
 kotlin = "2.0.21"
 coreKtx = "1.10.1"
@@ -17,6 +18,7 @@ googleid = "1.1.1"
 firebaseFirestore = "26.0.0"
 firebaseStorage = "22.0.0"
 lifecycleViewmodelCompose = "2.8.1"
+materialIconsExtendedAndroid = "1.6.8"
 navigationCompose = "2.7.7"
 playServicesAuth = "21.2.0"
 
@@ -24,7 +26,9 @@ playServicesAuth = "21.2.0"
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "coreSplashscreen" }
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewmodelCompose" }
+androidx-material-icons-extended-android = { module = "androidx.compose.material:material-icons-extended-android", version.ref = "materialIconsExtendedAndroid" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

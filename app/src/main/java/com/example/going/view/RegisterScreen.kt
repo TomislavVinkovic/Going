@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 
+// TODO: Add validation to the button click
 @Composable
 fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
     var email by remember {mutableStateOf("")}
