@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -37,7 +38,11 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.sp
 import com.example.going.util.AuthScreen
+import com.example.going.view.common.ConfirmDialog
 
 
 @Composable
@@ -90,26 +95,20 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
 
     // Error dialog
     if(showErrorDialog) {
-        AlertDialog(
-            onDismissRequest = {
+
+        val titleText = context.getString(R.string.login_failure)
+        val descText = context.getString(R.string.unknown_failure)
+
+        ConfirmDialog(
+            onConfirm = {
+                showErrorDialog = false
+                authViewModel.clearGoogleLoginState()
+            },
+            onDismiss = {
                 showErrorDialog = false
             },
-            title = { Text(stringResource(R.string.login_failure)) },
-            text = {
-                Text(
-                    googleSignInState.isError ?: stringResource(R.string.unknown_failure)
-                )
-           },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        showErrorDialog = false
-                        authViewModel.clearGoogleLoginState()
-                    }
-                ) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
+            title = titleText,
+            text = descText
         )
     }
 
@@ -138,7 +137,10 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
         ) {
             Text(
                 stringResource( R.string.app_name),
-                style=MaterialTheme.typography.headlineLarge
+                style = TextStyle(
+                    fontSize = 48.sp,
+                    color = MaterialTheme.colorScheme.inverseSurface
+                )
             )
 
             Spacer(modifier = Modifier.height(32.dp))
@@ -165,13 +167,22 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            TextButton(
+
+            Text(
+                stringResource(R.string.greeting_screen_register_invitation_1),
+                style = TextStyle(
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            OutlinedButton (
                 onClick = {
                     navController.navigate(AuthScreen.Register.route)
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Text(stringResource(R.string.greeting_screen_login_invitation))
+                Text(stringResource(R.string.greeting_screen_register_invitation_2),)
             }
         }
     }

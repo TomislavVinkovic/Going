@@ -17,12 +17,10 @@ import com.example.going.viewmodel.ProfileViewModel
 
 @Composable
 fun ProfileScreenNavigation(
-    navController: NavHostController,
     snackbarHostState: SnackbarHostState,
     authViewModel: AuthViewModel
 ) {
     ProfileScreenNavHost(
-        navController = navController,
         innerPadding = PaddingValues(),
         snackbarHostState,
         authViewModel
@@ -31,11 +29,11 @@ fun ProfileScreenNavigation(
 
 @Composable
 fun ProfileScreenNavHost(
-    navController: NavHostController,
     innerPadding: PaddingValues,
     snackbarHostState: SnackbarHostState,
     authViewModel: AuthViewModel
 ) {
+    val navController = rememberNavController()
     val profileViewModel: ProfileViewModel = viewModel()
     NavHost(
         navController = navController,

@@ -32,7 +32,8 @@
     <!-- Translations for the Greeting screen -->
     <string name="greeting_screen_email_login">Prijavi se e-mail adresom</string>
     <string name="greeting_screen_google_login">Prijavi se svojim Google računom</string>
-    <string name="greeting_screen_login_invitation">Nemaš korisnički račun? Registriraj se!</string>
+    <string name="greeting_screen_register_invitation_1">Nemaš korisnički račun?</string>
+    <string name="greeting_screen_register_invitation_2">Registriraj se kao novi korisnik</string>
 
     <!-- Data operations -->
     <string name="data_update_success">Radnja uspješno obavljena</string>

@@ -50,9 +50,9 @@ private val screens = listOf(
 
 @Composable
 fun MainAppScreen(
-    navController: NavHostController,
     authViewModel: AuthViewModel
 ) {
+    val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -101,7 +101,6 @@ fun MainAppNavHost(
         // Profile screen routes
         composable(MainScreen.Profile.route) {
             ProfileScreenNavigation(
-                navController = navController,
                 snackbarHostState = snackbarHostState,
                 authViewModel = authViewModel
             )

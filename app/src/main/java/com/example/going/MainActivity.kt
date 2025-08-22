@@ -12,10 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.going.util.Screen
 import com.example.going.view.Auth.AuthScreenNavigation
-import com.example.going.view.Auth.GreetingScreen
-import com.example.going.view.Auth.LoginScreen
 import com.example.going.view.MainAppScreen
-import com.example.going.view.Auth.RegisterScreen
 import com.example.going.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
@@ -54,10 +51,10 @@ fun AppNavigation(startDestination: String, authViewModel: AuthViewModel) {
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.Auth.route) {
-            AuthScreenNavigation(navController, authViewModel)
+            AuthScreenNavigation(authViewModel)
         }
         composable(route = Screen.MainApp.route) {
-            MainAppScreen(navController, authViewModel)
+            MainAppScreen(authViewModel)
         }
     }
 }

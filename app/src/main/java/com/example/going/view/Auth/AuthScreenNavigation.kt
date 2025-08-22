@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.going.util.AuthScreen
 import com.example.going.view.AppBottomNavigation
 import com.example.going.viewmodel.AuthViewModel
@@ -18,17 +19,13 @@ import com.example.going.viewmodel.AuthViewModel
 
 @Composable
 fun AuthScreenNavigation(
-    navController: NavHostController,
     authViewModel: AuthViewModel
 ) {
+    val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
-        bottomBar = {
-            AppBottomNavigation(navController)
-        }
-    ) { innerPadding ->
+    Scaffold(snackbarHost = { SnackbarHost(hostState = snackbarHostState) })
+    { innerPadding ->
         AuthScreenNavHost(
             navController = navController,
             innerPadding = PaddingValues(),

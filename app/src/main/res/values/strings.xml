@@ -38,7 +38,8 @@
     <!-- Translations for the Greeting screen -->
     <string name="greeting_screen_email_login">Login with e-mail</string>
     <string name="greeting_screen_google_login">Login with Google</string>
-    <string name="greeting_screen_login_invitation">Do not have a user account? Register for one now!</string>
+    <string name="greeting_screen_register_invitation_1">Do not have a user account?</string>
+    <string name="greeting_screen_register_invitation_2">Register as a new user</string>
 
     <!-- Data operations -->
     <string name="data_update_success">Operation successful</string>
