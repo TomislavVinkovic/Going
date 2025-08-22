@@ -38,6 +38,7 @@ import com.example.going.view.NotificationsScreen.NotificationsScreen
 import com.example.going.view.ProfileScreen.EditProfileInformationScreen
 import com.example.going.view.ProfileScreen.ProfileScreen
 import com.example.going.view.ProfileScreen.ProfileScreenNavigation
+import com.example.going.viewmodel.AuthViewModel
 
 private val screens = listOf(
     MainScreen.Friends,
@@ -48,8 +49,10 @@ private val screens = listOf(
 )
 
 @Composable
-fun MainAppScreen() {
-    val navController = rememberNavController()
+fun MainAppScreen(
+    navController: NavHostController,
+    authViewModel: AuthViewModel
+) {
     val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
        snackbarHost = { SnackbarHost(hostState = snackbarHostState) },
@@ -57,7 +60,7 @@ fun MainAppScreen() {
             AppBottomNavigation(navController)
        }
     ) { innerPadding ->
-        MainAppNavHost(navController, innerPadding, snackbarHostState)
+        MainAppNavHost(navController, innerPadding, snackbarHostState, authViewModel)
     }
 }
 
@@ -80,7 +83,8 @@ fun AppMainScreenPlaceholder(text: String) {
 fun MainAppNavHost(
     navController: NavHostController,
     innerPadding: PaddingValues,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    authViewModel: AuthViewModel
 ) {
     NavHost(
         navController = navController,
@@ -98,7 +102,8 @@ fun MainAppNavHost(
         composable(MainScreen.Profile.route) {
             ProfileScreenNavigation(
                 navController = navController,
-                snackbarHostState = snackbarHostState
+                snackbarHostState = snackbarHostState,
+                authViewModel = authViewModel
             )
         }
     }

@@ -1,4 +1,4 @@
-package com.example.going.view
+package com.example.going.view.Auth
 
 import android.util.Patterns
 import androidx.compose.foundation.layout.Arrangement
@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -32,7 +33,11 @@ import androidx.compose.ui.unit.dp
 
 // TODO: Add validation to the button click
 @Composable
-fun RegisterScreen(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
+fun RegisterScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel = viewModel(),
+    snackbarHostState: SnackbarHostState
+) {
     var email by remember {mutableStateOf("")}
     var username by remember {mutableStateOf("")}
     var password by remember {mutableStateOf("")}

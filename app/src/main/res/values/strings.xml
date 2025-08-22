@@ -24,6 +24,10 @@
     <string name="profile_screen_edit_profile_picture">Add or edit profile picture</string>
     <string name="profile_screen_edit_profile_info">Edit profile information</string>
     <string name="profile_screen_profile_public">I want my profile to be publicly visible</string>
+    <string name="profile_screen_logout">Log out</string>
+    <string name="profile_screen_logout_confirm">Yes, log out</string>
+    <string name="profile_screen_logout_desc">Are you sure you want to log out?</string>
+
 
     <!-- Translations for the login screen -->
     <string name="login_screen_title">Welcome back</string>
@@ -51,5 +55,6 @@
 
     <!-- Misc strings -->
     <string name="ok">OK</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

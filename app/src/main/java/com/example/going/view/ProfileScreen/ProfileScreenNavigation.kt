@@ -11,15 +11,21 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.going.util.ProfileScreen
+import com.example.going.view.ProfileScreen.ProfileScreen
+import com.example.going.viewmodel.AuthViewModel
 import com.example.going.viewmodel.ProfileViewModel
 
 @Composable
-fun ProfileScreenNavigation(navController: NavHostController, snackbarHostState: SnackbarHostState) {
-    val navController = rememberNavController()
+fun ProfileScreenNavigation(
+    navController: NavHostController,
+    snackbarHostState: SnackbarHostState,
+    authViewModel: AuthViewModel
+) {
     ProfileScreenNavHost(
         navController = navController,
         innerPadding = PaddingValues(),
-        snackbarHostState
+        snackbarHostState,
+        authViewModel
     )
 }
 
@@ -27,7 +33,8 @@ fun ProfileScreenNavigation(navController: NavHostController, snackbarHostState:
 fun ProfileScreenNavHost(
     navController: NavHostController,
     innerPadding: PaddingValues,
-    snackbarHostState: SnackbarHostState
+    snackbarHostState: SnackbarHostState,
+    authViewModel: AuthViewModel
 ) {
     val profileViewModel: ProfileViewModel = viewModel()
     NavHost(
@@ -40,7 +47,8 @@ fun ProfileScreenNavHost(
         composable(ProfileScreen.Profile.route) {
             ProfileScreen(
                 navController = navController,
-                profileViewModel = profileViewModel
+                profileViewModel = profileViewModel,
+                authViewModel
             )
         }
         composable(ProfileScreen.EditProfileInformation.route) {

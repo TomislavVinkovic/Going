@@ -19,6 +19,9 @@
     <string name="profile_screen_edit_profile_picture">Dodaj ili uredi sliku profila</string>
     <string name="profile_screen_edit_profile_info">Uredi podatke o profilu</string>
     <string name="profile_screen_profile_public">Želim da mi profil bude javno vidljiv</string>
+    <string name="profile_screen_logout">Odjava</string>
+    <string name="profile_screen_logout_confirm">Da, odjavi me</string>
+    <string name="profile_screen_logout_desc">Jeste li sigurni da se želite odjaviti?</string>
 
     <!-- Translations for the login screen -->
     <string name="login_screen_title">Dobrodošli natrag</string>
@@ -44,4 +47,5 @@
 
     <!-- Misc strings -->
     <string name="ok">U redu</string>
+    <string name="cancel">Otkaži</string>
 </resources>

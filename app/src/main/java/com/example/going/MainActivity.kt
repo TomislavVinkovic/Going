@@ -11,10 +11,11 @@ import com.example.going.ui.theme.GoingTheme
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.going.util.Screen
-import com.example.going.view.GreetingScreen
-import com.example.going.view.LoginScreen
+import com.example.going.view.Auth.AuthScreenNavigation
+import com.example.going.view.Auth.GreetingScreen
+import com.example.going.view.Auth.LoginScreen
 import com.example.going.view.MainAppScreen
-import com.example.going.view.RegisterScreen
+import com.example.going.view.Auth.RegisterScreen
 import com.example.going.viewmodel.AuthViewModel
 
 class MainActivity : ComponentActivity() {
@@ -35,34 +36,28 @@ class MainActivity : ComponentActivity() {
                 val startDestination = if(authViewModel.isUserLoggedIn.value) {
                     Screen.MainApp.route
                 } else {
-                    Screen.Greeting.route
+                    Screen.Auth.route
                 }
 
-                AppNavigation(startDestination = startDestination)
+                AppNavigation(
+                    startDestination = startDestination,
+                    authViewModel
+                )
             }
         }
     }
 }
 
 @Composable
-fun AppNavigation(startDestination: String) {
+fun AppNavigation(startDestination: String, authViewModel: AuthViewModel) {
     val navController = rememberNavController()
 
     NavHost(navController = navController, startDestination = startDestination) {
-        // Autentikacijski dio grafa
-        composable(route = Screen.Greeting.route) {
-            GreetingScreen(navController = navController)
+        composable(route = Screen.Auth.route) {
+            AuthScreenNavigation(navController, authViewModel)
         }
-        composable(route = Screen.Login.route) {
-            LoginScreen(navController = navController)
-        }
-        composable(route = Screen.Register.route) {
-            RegisterScreen(navController = navController)
-        }
-
-        // Glavni dio aplikacije nakon prijave
         composable(route = Screen.MainApp.route) {
-            MainAppScreen() // Ovaj ekran će imati svoj vlastiti Bottom Bar i navigaciju
+            MainAppScreen(navController, authViewModel)
         }
     }
 }

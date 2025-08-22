@@ -1,4 +1,4 @@
-package com.example.going.view
+package com.example.going.view.Auth
 
 import android.util.Patterns
 import androidx.compose.foundation.layout.Arrangement
@@ -10,12 +10,12 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -35,10 +36,17 @@ import androidx.navigation.NavController
 import com.example.going.util.Screen
 import com.example.going.viewmodel.AuthViewModel
 import com.example.going.R
+import com.example.going.util.AuthScreen
+import com.example.going.view.common.ConfirmDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
+fun LoginScreen(
+    navController: NavController,
+    authViewModel: AuthViewModel = viewModel(),
+    snackbarHostState: SnackbarHostState
+) {
+    val context = LocalContext.current
     var email by remember { mutableStateOf("") }
     var password by remember {mutableStateOf("")}
 
@@ -61,7 +69,7 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
     LaunchedEffect(loginState) {
         if(loginState.isSuccess != null) {
             navController.navigate(Screen.MainApp.route) {
-                popUpTo(Screen.Greeting.route) {inclusive = true}
+                popUpTo(AuthScreen.Greeting.route) {inclusive = true}
             }
         }
         if(loginState.isError != null) {
@@ -71,23 +79,18 @@ fun LoginScreen(navController: NavController, authViewModel: AuthViewModel = vie
 
     // Error dialog
     if(showErrorDialog) {
-        AlertDialog(
-            onDismissRequest = {
+        val loginFailureTitle = context.getString(R.string.login_failure)
+        val loginFailureTextDefault = context.getString(R.string.data_update_success)
+        ConfirmDialog(
+            {
                 showErrorDialog = false
             },
-            title = { Text(stringResource(R.string.login_failure)) },
-            text = {
-                Text(loginState.isError?: stringResource(R.string.unknown_failure))
+            {
+                showErrorDialog = false
             },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        showErrorDialog = false
-                    }
-                ) {
-                    Text(stringResource(R.string.ok))
-                }
-            }
+            title=loginFailureTitle,
+            text=loginState.isError?: loginFailureTextDefault
+
         )
     }
 

@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
+import com.google.android.gms.auth.api.identity.Identity
+import android.content.Context
 
 data class AuthState (
     val isLoading: Boolean = false,
@@ -117,11 +119,15 @@ class AuthViewModel: ViewModel() {
         }
     }
 
-    fun logout() {
+    fun logout(context: Context) {
         viewModelScope.launch {
             _logoutState.value = AuthState(isLoading = true)
             try {
                 auth.signOut()
+
+                val oneTapClient = Identity.getSignInClient(context)
+                oneTapClient.signOut().await()
+
                 _logoutState.value = AuthState(isSuccess = "Odjava uspješna")
             } catch (e: Exception) {
                 _logoutState.value = AuthState(isError = e.message)
@@ -170,6 +176,10 @@ class AuthViewModel: ViewModel() {
 
     fun clearGoogleLoginState() {
         _googleSignInState.value = AuthState()
+    }
+
+    fun clearLogoutState() {
+        _logoutState.value = AuthState()
     }
 }
 

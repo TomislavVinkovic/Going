@@ -12,10 +12,15 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import com.example.going.R
 
 sealed class Screen(val route: String) {
+    object MainApp : Screen("main_app_screen")
+    object Auth: Screen("auth_screen")
+}
+
+sealed class AuthScreen(val route: String) {
     object Greeting : Screen("greeting_screen")
     object Login : Screen("login_screen")
     object Register : Screen("register_screen")
-    object MainApp : Screen("main_app_screen")
+
 }
 
 sealed class MainScreen(

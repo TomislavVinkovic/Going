@@ -1,4 +1,4 @@
-package com.example.going.view
+package com.example.going.view.Auth
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,11 +37,11 @@ import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.res.stringResource
+import com.example.going.util.AuthScreen
 
 
 @Composable
 fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
-
     val context = LocalContext.current
     val googleSignInState by authViewModel.googleSignInState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
@@ -116,7 +116,7 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
     LaunchedEffect(googleSignInState) {
         if(googleSignInState.isSuccess != null) {
             navController.navigate(Screen.MainApp.route) {
-                popUpTo(Screen.Greeting.route) { inclusive = true }
+                popUpTo(Screen.Auth.route) { inclusive = true }
             }
         }
         if(googleSignInState.isError != null) {
@@ -145,7 +145,7 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
 
             Button(
                 onClick = {
-                    navController.navigate(Screen.Login.route)
+                    navController.navigate(AuthScreen.Login.route)
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -167,7 +167,7 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
 
             TextButton(
                 onClick = {
-                    navController.navigate(Screen.Register.route)
+                    navController.navigate(AuthScreen.Register.route)
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {

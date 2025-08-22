@@ -1,5 +1,6 @@
 package com.example.going.view.ProfileScreen
 
+import android.app.ProgressDialog.show
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -26,12 +28,14 @@ import com.example.going.viewmodel.ProfileViewModel
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -39,22 +43,85 @@ import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import com.example.going.viewmodel.ProfileUserData
 import com.example.going.R
+import com.example.going.util.MainScreen
 import com.example.going.util.ProfileScreen
+import com.example.going.util.Screen
+import com.example.going.view.common.ConfirmDialog
+import com.example.going.view.common.MessageDialog
+import com.example.going.viewmodel.AuthViewModel
+import kotlinx.coroutines.launch
 
 @Composable
 fun ProfileScreen(
     navController: NavController,
-    profileViewModel: ProfileViewModel
+    profileViewModel: ProfileViewModel,
+    authViewModel: AuthViewModel
 ) {
+    val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     // Viewmodel state
     val isLoading by profileViewModel.isLoading.collectAsState()
     val userData by profileViewModel.userData.collectAsState()
-    val updateUserDataState by profileViewModel.updateUserDataState.collectAsState()
+    val logoutState by authViewModel.logoutState.collectAsState()
 
-    // UI state
-    var showConfirmationDialog by remember { mutableStateOf(false) }
-    var pendingPublicInterestState by remember {mutableStateOf(false)}
+    var showLogoutConfirmationDialog by remember { mutableStateOf(false) }
+    var showLogoutErrorDialog by remember { mutableStateOf(false) }
+
+    LaunchedEffect(logoutState) {
+        if (logoutState.isSuccess != null) {
+            navController.navigate(
+                Screen.Auth.route
+            ) {
+                popUpTo(0) { inclusive = true }
+            }
+            authViewModel.clearLogoutState()
+        }
+        else if(logoutState.isError != null) {
+            showLogoutErrorDialog = true
+        }
+    }
+
+    fun openLogoutConfirmationDialog() {
+        showLogoutConfirmationDialog = true
+    }
+    fun openLogoutErrorDialog() {
+        showLogoutErrorDialog = true
+    }
+
+    fun logout() {
+        openLogoutConfirmationDialog()
+    }
+
+    if(showLogoutConfirmationDialog) {
+        val logoutConfirmationTitle = context.getString(R.string.profile_screen_logout)
+        val logoutConfirmationText = context.getString(R.string.profile_screen_logout_desc)
+        val logoutConfirmationButtonText
+            = context.getString(R.string.profile_screen_logout_confirm)
+
+        ConfirmDialog(
+            {
+                showLogoutConfirmationDialog = false
+                authViewModel.logout(context)
+            },
+            {
+                showLogoutConfirmationDialog = false
+            },
+            logoutConfirmationTitle,
+            logoutConfirmationText,
+            logoutConfirmationButtonText
+        )
+    }
+    if(showLogoutErrorDialog) {
+        val logoutErrorText = logoutState.isError!!
+        MessageDialog(
+            onClose = {
+                showLogoutErrorDialog = false
+                authViewModel.clearLogoutState()
+            },
+            message = logoutErrorText
+        )
+    }
 
     Box(
         modifier = Modifier.fillMaxSize()
@@ -62,11 +129,20 @@ fun ProfileScreen(
 
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.Start,
-            verticalArrangement = Arrangement.Top
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
             ProfileCard(navController, isLoading, userData)
+
+            Button(
+                onClick = {
+                    logout()
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(stringResource(R.string.profile_screen_logout))
+            }
         }
     }
 }
