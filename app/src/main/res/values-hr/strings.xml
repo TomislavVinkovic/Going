@@ -29,6 +29,19 @@
     <string name="login_screen_password">Lozinka</string>
     <string name="login_screen_login">Prijava</string>
 
+    <!-- Translations for the register screen -->
+    <string name="register_screen_title">Registracija</string>
+    <string name="register_screen_email">E-mail</string>
+    <string name="register_screen_password">Lozinka</string>
+    <string name="register_screen_repeat_password">Ponovljena lozinka</string>
+    <string name="register_screen_username">Korisničko ime</string>
+    <string name="register_screen_firstname">Ime</string>
+    <string name="register_screen_lastname">Prezime</string>
+    <string name="register_screen_register_button_text">Registriraj se</string>
+    <string name="register_screen_hide_password">Sakrij lozinku</string>
+    <string name="register_screen_show_password">Prikaži lozinku</string>
+    <string name="register_screen_success_message">Registracija uspješna!</string>
+
     <!-- Translations for the Greeting screen -->
     <string name="greeting_screen_email_login">Prijavi se e-mail adresom</string>
     <string name="greeting_screen_google_login">Prijavi se svojim Google računom</string>
@@ -45,6 +58,10 @@
     <string name="firstname_lastname_validation_error">Ime/prezime moraju biti dugi barem dva znaka i započinjati velikim slovom</string>
     <string name="email_validation_error">E-mail adresa nije valjana</string>
     <string name="password_validation_error">Lozinka mora imati barem 8 znakova, 1 veliko slovo, 1 broj, i jedan spec. znak</string>
+    <string name="repeat_password_validation_error">
+        Lozinke se ne podudaraju
+    </string>
+    <string name="username_validation_error">Korisničko ime mora sadržavati barem 6 znakova</string>
 
     <!-- Misc strings -->
     <string name="ok">U redu</string>

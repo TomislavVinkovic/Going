@@ -90,7 +90,7 @@ class AuthViewModel: ViewModel() {
         }
     }
 
-    fun registerUser(
+    suspend fun registerUser(
         email: String,
         password: String,
         firstname: String,
@@ -180,6 +180,10 @@ class AuthViewModel: ViewModel() {
 
     fun clearLogoutState() {
         _logoutState.value = AuthState()
+    }
+
+    fun clearRegisterState() {
+        _registerState.value = AuthState()
     }
 }
 

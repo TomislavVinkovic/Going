@@ -19,7 +19,8 @@ import com.example.going.viewmodel.AuthViewModel
 
 @Composable
 fun AuthScreenNavigation(
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    mainNavController: NavHostController
 ) {
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -30,7 +31,8 @@ fun AuthScreenNavigation(
             navController = navController,
             innerPadding = PaddingValues(),
             snackbarHostState,
-            authViewModel
+            authViewModel,
+            mainNavController
         )
     }
 }
@@ -40,7 +42,8 @@ fun AuthScreenNavHost(
     navController: NavHostController,
     innerPadding: PaddingValues,
     snackbarHostState: SnackbarHostState,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    mainNavController: NavHostController,
 ) {
     NavHost(
         navController = navController,
@@ -52,12 +55,14 @@ fun AuthScreenNavHost(
         composable(AuthScreen.Greeting.route) {
             GreetingScreen(
                 navController = navController,
+                mainNavController,
                 authViewModel
             )
         }
         composable(AuthScreen.Login.route) {
             LoginScreen(
                 navController = navController,
+                mainNavController,
                 authViewModel,
                 snackbarHostState = snackbarHostState
             )
@@ -65,6 +70,7 @@ fun AuthScreenNavHost(
         composable(AuthScreen.Register.route) {
             RegisterScreen(
                 navController = navController,
+                mainNavController,
                 authViewModel,
                 snackbarHostState = snackbarHostState
             )

@@ -17,13 +17,15 @@ import com.example.going.viewmodel.ProfileViewModel
 
 @Composable
 fun ProfileScreenNavigation(
+    mainNavController: NavHostController,
     snackbarHostState: SnackbarHostState,
     authViewModel: AuthViewModel
 ) {
     ProfileScreenNavHost(
         innerPadding = PaddingValues(),
         snackbarHostState,
-        authViewModel
+        authViewModel,
+        mainNavController
     )
 }
 
@@ -31,7 +33,8 @@ fun ProfileScreenNavigation(
 fun ProfileScreenNavHost(
     innerPadding: PaddingValues,
     snackbarHostState: SnackbarHostState,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    mainNavController: NavHostController
 ) {
     val navController = rememberNavController()
     val profileViewModel: ProfileViewModel = viewModel()
@@ -46,7 +49,8 @@ fun ProfileScreenNavHost(
             ProfileScreen(
                 navController = navController,
                 profileViewModel = profileViewModel,
-                authViewModel
+                authViewModel,
+                mainNavController
             )
         }
         composable(ProfileScreen.EditProfileInformation.route) {

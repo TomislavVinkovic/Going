@@ -51,10 +51,10 @@ fun AppNavigation(startDestination: String, authViewModel: AuthViewModel) {
 
     NavHost(navController = navController, startDestination = startDestination) {
         composable(route = Screen.Auth.route) {
-            AuthScreenNavigation(authViewModel)
+            AuthScreenNavigation(authViewModel, mainNavController = navController)
         }
         composable(route = Screen.MainApp.route) {
-            MainAppScreen(authViewModel)
+            MainAppScreen(authViewModel, mainNavController = navController)
         }
     }
 }

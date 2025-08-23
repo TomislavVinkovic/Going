@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.going.viewmodel.ProfileUserData
 import com.example.going.R
@@ -51,7 +52,8 @@ import com.example.going.viewmodel.AuthViewModel
 fun ProfileScreen(
     navController: NavController,
     profileViewModel: ProfileViewModel,
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    mainNavController: NavHostController
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
@@ -66,7 +68,7 @@ fun ProfileScreen(
 
     LaunchedEffect(logoutState) {
         if (logoutState.isSuccess != null) {
-            navController.navigate(
+            mainNavController.navigate(
                 Screen.Auth.route
             ) {
                 popUpTo(0) { inclusive = true }

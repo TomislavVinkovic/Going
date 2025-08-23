@@ -33,6 +33,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import androidx.navigation.NavHostController
 import com.example.going.util.Screen
 import com.example.going.viewmodel.AuthViewModel
 import com.example.going.R
@@ -42,7 +43,8 @@ import com.example.going.view.common.ConfirmDialog
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(
-    navController: NavController,
+    navController: NavHostController,
+    mainNavController: NavHostController,
     authViewModel: AuthViewModel = viewModel(),
     snackbarHostState: SnackbarHostState
 ) {
@@ -68,7 +70,7 @@ fun LoginScreen(
 
     LaunchedEffect(loginState) {
         if(loginState.isSuccess != null) {
-            navController.navigate(Screen.MainApp.route) {
+            mainNavController.navigate(Screen.MainApp.route) {
                 popUpTo(AuthScreen.Greeting.route) {inclusive = true}
             }
         }

@@ -35,6 +35,19 @@
     <string name="login_screen_password">Password</string>
     <string name="login_screen_login">Log in</string>
 
+    <!-- Translations for the register screen -->
+    <string name="register_screen_title">Register</string>
+    <string name="register_screen_email">E-mail</string>
+    <string name="register_screen_password">Password</string>
+    <string name="register_screen_repeat_password">Repeat password</string>
+    <string name="register_screen_username">Username</string>
+    <string name="register_screen_firstname">First name</string>
+    <string name="register_screen_lastname">Last name</string>
+    <string name="register_screen_register_button_text">Register</string>
+    <string name="register_screen_hide_password">Hide password</string>
+    <string name="register_screen_show_password">Show password</string>
+    <string name="register_screen_success_message">Registration successful!</string>
+
     <!-- Translations for the Greeting screen -->
     <string name="greeting_screen_email_login">Login with e-mail</string>
     <string name="greeting_screen_google_login">Login with Google</string>
@@ -53,6 +66,8 @@
     <string name="password_validation_error">
         Password must be at least 8 characters long, and contain at least one uppercase letter, one lowercase letter, one number and one special character
     </string>
+    <string name="username_validation_error">The username must be at least 6 characters long</string>
+    <string name="repeat_password_validation_error">Passwords do not match</string>
 
     <!-- Misc strings -->
     <string name="ok">OK</string>

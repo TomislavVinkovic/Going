@@ -41,12 +41,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.going.util.AuthScreen
 import com.example.going.view.common.ConfirmDialog
 
 
 @Composable
-fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = viewModel()) {
+fun GreetingScreen(
+    navController: NavHostController,
+    mainNavController: NavHostController,
+    authViewModel: AuthViewModel = viewModel()
+) {
     val context = LocalContext.current
     val googleSignInState by authViewModel.googleSignInState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
@@ -114,7 +119,7 @@ fun GreetingScreen(navController: NavController, authViewModel: AuthViewModel = 
 
     LaunchedEffect(googleSignInState) {
         if(googleSignInState.isSuccess != null) {
-            navController.navigate(Screen.MainApp.route) {
+            mainNavController.navigate(Screen.MainApp.route) {
                 popUpTo(Screen.Auth.route) { inclusive = true }
             }
         }

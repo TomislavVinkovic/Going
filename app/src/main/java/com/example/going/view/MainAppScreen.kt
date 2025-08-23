@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
@@ -25,18 +24,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import com.example.going.util.ProfileScreen
 import com.example.going.view.FriendsScreen.FriendsScreen
 import com.example.going.view.MapScreen.MapScreen
 import com.example.going.view.MyEventsScreen.MyEventsScreen
 import com.example.going.view.NotificationsScreen.NotificationsScreen
-import com.example.going.view.ProfileScreen.EditProfileInformationScreen
-import com.example.going.view.ProfileScreen.ProfileScreen
 import com.example.going.view.ProfileScreen.ProfileScreenNavigation
 import com.example.going.viewmodel.AuthViewModel
 
@@ -50,7 +44,8 @@ private val screens = listOf(
 
 @Composable
 fun MainAppScreen(
-    authViewModel: AuthViewModel
+    authViewModel: AuthViewModel,
+    mainNavController: NavHostController
 ) {
     val navController = rememberNavController()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -60,7 +55,13 @@ fun MainAppScreen(
             AppBottomNavigation(navController)
        }
     ) { innerPadding ->
-        MainAppNavHost(navController, innerPadding, snackbarHostState, authViewModel)
+        MainAppNavHost(
+            navController,
+            mainNavController,
+            innerPadding,
+            snackbarHostState,
+            authViewModel
+        )
     }
 }
 
@@ -82,6 +83,7 @@ fun AppMainScreenPlaceholder(text: String) {
 @Composable
 fun MainAppNavHost(
     navController: NavHostController,
+    mainNavController: NavHostController,
     innerPadding: PaddingValues,
     snackbarHostState: SnackbarHostState,
     authViewModel: AuthViewModel
@@ -101,6 +103,7 @@ fun MainAppNavHost(
         // Profile screen routes
         composable(MainScreen.Profile.route) {
             ProfileScreenNavigation(
+                mainNavController = mainNavController,
                 snackbarHostState = snackbarHostState,
                 authViewModel = authViewModel
             )
