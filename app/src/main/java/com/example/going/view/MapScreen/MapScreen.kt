@@ -42,7 +42,7 @@ fun MapScreen(
     navController: NavController,
     mapViewModel: MapViewModel = viewModel()
 ) {
-    val eventLocations by mapViewModel.eventLocations.collectAsState()
+    val events by mapViewModel.events.collectAsState()
     val userLocation by mapViewModel.userLocation.collectAsState()
     val context = LocalContext.current
     val isDarkTheme = isSystemInDarkTheme()
@@ -121,11 +121,11 @@ fun MapScreen(
         )
     ) {
         val customMapMarkerIcon = remember {CustomMapMarkerIcon()}
-        eventLocations.forEach { eventLocation ->
+        events.forEach { event ->
             Marker(
-                state = rememberMarkerState(position = eventLocation.position),
-                title = "Event ${eventLocation.id}",
-                snippet = "Click to view details",
+                state = rememberMarkerState(position = event.position),
+                title = event.name ?: "Event",
+                snippet = event.locationName ?: "Click for details",
                 icon = customMapMarkerIcon,
                 anchor = Offset(0.5f, 0.5f)
             )
