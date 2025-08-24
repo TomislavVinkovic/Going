@@ -66,3 +66,11 @@ sealed class ProfileScreen(
         "profile.edit_profile_info"
     )
 }
+
+sealed class MapScreen(
+    val route: String
+) {
+    object Map: MapScreen(
+        "map.map"
+    )
+}

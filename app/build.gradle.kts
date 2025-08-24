@@ -41,7 +41,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -69,4 +68,6 @@ dependencies {
     implementation(libs.play.services.auth)
     implementation(libs.androidx.material.icons.extended.android)
     implementation(libs.coil.compose)
+    implementation(libs.maps.compose)
+    implementation(libs.play.services.location)
 }

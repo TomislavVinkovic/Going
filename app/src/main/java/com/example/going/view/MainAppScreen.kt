@@ -95,6 +95,8 @@ fun MainAppNavHost(
     ) {
         composable(MainScreen.Friends.route) { FriendsScreen(navController = navController) }
         composable(MainScreen.MyEvents.route) { MyEventsScreen(navController = navController) }
+
+
         composable(MainScreen.Map.route) { MapScreen(navController = navController) }
 
         // Notifications screen route
