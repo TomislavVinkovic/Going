@@ -64,6 +64,7 @@
     <string name="event_details_screen_event_name">Event name</string>
     <string name="event_details_screen_back_button">Back</string>
     <string name="event_details_screen_im_interested_button">I am interested</string>
+    <string name="event_details_cancel_interest">Cancel interest</string>
     <string name="event_details_screen_unknown_location">Unknown location</string>
     <string name="event_details_screen_description">Description</string>
     <string name="event_details_screen_no_description">No description</string>

@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Star
@@ -59,6 +60,7 @@ fun EventDetailsScreen(
     eventDetailsViewModel: EventDetailsViewModel = viewModel()
 ) {
     val event by eventDetailsViewModel.eventDetails.collectAsState()
+    val isUserInterested by eventDetailsViewModel.isUserInterested.collectAsState()
 
     Scaffold(
         topBar = {
@@ -75,10 +77,30 @@ fun EventDetailsScreen(
             )
         },
         floatingActionButton = {
+            // --- MODIFIED: The button is now dynamic ---
             ExtendedFloatingActionButton(
-                onClick = { /* TODO: Implement "I'm interested" logic */ },
-                icon = { Icon(Icons.Filled.Star, contentDescription = null) },
-                text = { Text(stringResource(R.string.event_details_screen_im_interested_button)) }
+                onClick = {
+                    eventDetailsViewModel.toggleInterest()
+                },
+                // Change the icon based on the interest state
+                icon = {
+                    Icon(
+                        if (isUserInterested) Icons.Filled.Check else Icons.Filled.Star,
+                        contentDescription = null
+                    )
+                },
+                // Change the text based on the interest state
+                text = {
+                    Text(
+                        if (isUserInterested) stringResource(R.string.event_details_cancel_interest)
+                        else stringResource(R.string.event_details_screen_im_interested_button)
+                    )
+                },
+                // Change the color based on the interest state
+                containerColor = if (isUserInterested) MaterialTheme.colorScheme.primary
+                else MaterialTheme.colorScheme.primaryContainer,
+                contentColor = if (isUserInterested) MaterialTheme.colorScheme.onPrimary
+                else MaterialTheme.colorScheme.onPrimaryContainer
             )
         },
         floatingActionButtonPosition = FabPosition.Center

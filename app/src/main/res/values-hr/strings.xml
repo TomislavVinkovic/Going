@@ -58,6 +58,7 @@
     <string name="event_details_screen_event_name">Ime eventa</string>
     <string name="event_details_screen_back_button">Natrag</string>
     <string name="event_details_screen_im_interested_button">Zainteresiran sam</string>
+    <string name="event_details_cancel_interest">Otkaži interes</string>
     <string name="event_details_screen_unknown_location">Nepoznata lokacija</string>
     <string name="event_details_screen_description">Opis</string>
     <string name="event_details_screen_no_description">Nema opisa</string>
