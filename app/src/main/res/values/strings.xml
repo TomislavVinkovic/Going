@@ -54,6 +54,12 @@
     <string name="greeting_screen_register_invitation_1">Do not have a user account?</string>
     <string name="greeting_screen_register_invitation_2">Register as a new user</string>
 
+    <!-- Translations for the Map screen -->
+    <string name="map_screen_location">Location</string>
+    <string name="map_screen_event_start">Starts at</string>
+    <string name="map_screen_event_end">Ends at</string>
+    <string name="map_screen_more_info">More info</string>
+
     <!-- Data operations -->
     <string name="data_update_success">Operation successful</string>
     <string name="data_update_failure">Operation failed</string>

@@ -1,6 +1,7 @@
 package com.example.going.view.MapScreen
 
 import android.Manifest
+import android.app.ProgressDialog.show
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.Canvas
@@ -9,6 +10,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -21,31 +25,33 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
-import androidx.core.graphics.createBitmap
 import com.example.going.R
 import com.example.going.view.MapScreen.util.CustomMapMarkerIcon
+import com.example.going.view.MapScreen.util.EventModalBottomSheet
+import com.example.going.viewmodel.EventData
 import com.google.android.gms.maps.model.MapStyleOptions
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
     navController: NavController,
     mapViewModel: MapViewModel = viewModel()
 ) {
     val events by mapViewModel.events.collectAsState()
+    val sheetState = rememberModalBottomSheetState()
     val userLocation by mapViewModel.userLocation.collectAsState()
     val context = LocalContext.current
     val isDarkTheme = isSystemInDarkTheme()
+
+    var selectedEvent by remember {mutableStateOf<EventData?>(null)}
 
     var hasLocationPermission by remember {
         mutableStateOf(
@@ -124,13 +130,25 @@ fun MapScreen(
         events.forEach { event ->
             Marker(
                 state = rememberMarkerState(position = event.position),
-                title = event.name ?: "Event",
-                snippet = event.locationName ?: "Click for details",
+                onClick = {
+                    selectedEvent = event
+                    true
+                },
                 icon = customMapMarkerIcon,
                 anchor = Offset(0.5f, 0.5f)
             )
         }
+    }
 
+    if(selectedEvent != null) {
+        ModalBottomSheet(
+            onDismissRequest = {
+                selectedEvent = null
+            },
+            sheetState=sheetState
+        ) {
+            EventModalBottomSheet(selectedEvent)
+        }
     }
     
 }

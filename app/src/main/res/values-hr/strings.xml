@@ -48,6 +48,12 @@
     <string name="greeting_screen_register_invitation_1">Nemaš korisnički račun?</string>
     <string name="greeting_screen_register_invitation_2">Registriraj se kao novi korisnik</string>
 
+    <!-- Translations for the Map screen -->
+    <string name="map_screen_location">Lokacija</string>
+    <string name="map_screen_event_start">Početak</string>
+    <string name="map_screen_event_end">Završetak</string>
+    <string name="map_screen_more_info">Više informacija</string>
+
     <!-- Data operations -->
     <string name="data_update_success">Radnja uspješno obavljena</string>
     <string name="data_update_failure">Radnja nije uspješna</string>
