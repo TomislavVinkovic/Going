@@ -4,26 +4,14 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.example.going.model.EventData
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Firebase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.firestore
-
-data class EventData(
-    val id: String,
-    val name: String?,
-    val category: String?,
-    val locationName: String?,
-    val position: LatLng, // Converted from GeoPoint
-    val description: String?,
-    val startTime: Timestamp?,
-    val endTime: Timestamp?,
-    val tags: List<String>?
-)
 
 class MapViewModel : ViewModel() {
 
@@ -79,7 +67,8 @@ class MapViewModel : ViewModel() {
                                 description = doc.getString("description"),
                                 startTime = doc.getTimestamp("start_time"),
                                 endTime = doc.getTimestamp("end_time"),
-                                tags = doc.get("tags") as? List<String>
+                                tags = doc.get("tags") as? List<String>,
+                                image = doc.getString("image")
                             )
                         }
                     }

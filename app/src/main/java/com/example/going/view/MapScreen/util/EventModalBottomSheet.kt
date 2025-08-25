@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Schedule
@@ -18,12 +19,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.going.R
-import com.example.going.viewmodel.EventData
-import java.security.Timestamp
+import com.example.going.model.EventData
 import java.text.SimpleDateFormat
 
 fun formatTimestamp(timestamp: com.google.firebase.Timestamp?, deviceConfig: Configuration): String {
@@ -40,7 +44,8 @@ fun formatTimestamp(timestamp: com.google.firebase.Timestamp?, deviceConfig: Con
 
 @Composable
 fun EventModalBottomSheet(
-    selectedEvent: EventData?
+    selectedEvent: EventData?,
+    onButtonClick: () -> Unit = {}
 ) {
 
     Column(
@@ -55,6 +60,20 @@ fun EventModalBottomSheet(
         )
 
         Spacer(modifier = Modifier.height(16.dp))
+
+        AsyncImage(
+            model = selectedEvent?.image,
+            contentDescription = selectedEvent?.name ?: stringResource(R.string.event_details_screen_event_name),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+                .clip(RoundedCornerShape(12.dp)),
+            contentScale = ContentScale.Crop,
+            // Optional: Show a placeholder while the image is loading
+            placeholder = painterResource(id = R.drawable.ic_launcher_background),
+            // Optional: Show an error image if the URL fails to load
+            error = painterResource(id = R.drawable.ic_launcher_background)
+        )
 
         // Location Row
         Row(verticalAlignment = Alignment.CenterVertically) {
@@ -104,11 +123,9 @@ fun EventModalBottomSheet(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // "More Info" Button
+
         Button(
-            onClick = {
-                // TODO: Navigate to the full details screen
-            },
+            onClick = onButtonClick,
             modifier = Modifier.fillMaxWidth()
         ) {
             Text(stringResource(R.string.map_screen_more_info))

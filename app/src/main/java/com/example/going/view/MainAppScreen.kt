@@ -29,6 +29,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import com.example.going.view.FriendsScreen.FriendsScreen
 import com.example.going.view.MapScreen.MapScreen
+import com.example.going.view.MapScreen.MapScreenNavigation
 import com.example.going.view.MyEventsScreen.MyEventsScreen
 import com.example.going.view.NotificationsScreen.NotificationsScreen
 import com.example.going.view.ProfileScreen.ProfileScreenNavigation
@@ -97,7 +98,7 @@ fun MainAppNavHost(
         composable(MainScreen.MyEvents.route) { MyEventsScreen(navController = navController) }
 
 
-        composable(MainScreen.Map.route) { MapScreen(navController = navController) }
+        composable(MainScreen.Map.route) { MapScreenNavigation() }
 
         // Notifications screen route
         composable(MainScreen.Notifications.route) { NotificationsScreen(navController = navController) }

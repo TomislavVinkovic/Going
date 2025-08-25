@@ -60,6 +60,17 @@
     <string name="map_screen_event_end">Ends at</string>
     <string name="map_screen_more_info">More info</string>
 
+    <!-- Translations for the Event details screen -->
+    <string name="event_details_screen_event_name">Event name</string>
+    <string name="event_details_screen_back_button">Back</string>
+    <string name="event_details_screen_im_interested_button">I am interested</string>
+    <string name="event_details_screen_unknown_location">Unknown location</string>
+    <string name="event_details_screen_description">Description</string>
+    <string name="event_details_screen_no_description">No description</string>
+    <string name="event_details_screen_tags">Tags</string>
+    <string name="event_details_interested_users">Interested users</string>
+    <string name="event_details_screen_more_info">More info</string>
+
     <!-- Data operations -->
     <string name="data_update_success">Operation successful</string>
     <string name="data_update_failure">Operation failed</string>

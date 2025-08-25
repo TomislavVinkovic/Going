@@ -1,11 +1,7 @@
 package com.example.going.view.MapScreen
 
 import android.Manifest
-import android.app.ProgressDialog.show
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
-import android.graphics.Canvas
-import android.graphics.Paint
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -35,16 +31,20 @@ import com.google.maps.android.compose.Marker
 import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.example.going.R
+import com.example.going.model.EventData
+import com.example.going.util.MapScreen
 import com.example.going.view.MapScreen.util.CustomMapMarkerIcon
 import com.example.going.view.MapScreen.util.EventModalBottomSheet
-import com.example.going.viewmodel.EventData
+import com.example.going.view.common.EventDetailsScreen
+import com.example.going.viewmodel.EventDetailsViewModel
 import com.google.android.gms.maps.model.MapStyleOptions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
     navController: NavController,
-    mapViewModel: MapViewModel = viewModel()
+    mapViewModel: MapViewModel = viewModel(),
+    eventDetailsViewModel: EventDetailsViewModel = viewModel()
 ) {
     val events by mapViewModel.events.collectAsState()
     val sheetState = rememberModalBottomSheetState()
@@ -154,7 +154,13 @@ fun MapScreen(
             },
             sheetState=sheetState
         ) {
-            EventModalBottomSheet(selectedEvent)
+            EventModalBottomSheet(
+                selectedEvent,
+                onButtonClick={
+                    eventDetailsViewModel.setEventId(selectedEvent!!.id)
+                    navController.navigate(MapScreen.EventDetails.route)
+                }
+            )
         }
     }
     

@@ -14,43 +14,43 @@ import com.example.going.util.MapScreen
 import com.example.going.util.ProfileScreen
 import com.example.going.view.MapScreen.MapScreen
 import com.example.going.view.ProfileScreen.ProfileScreen
+import com.example.going.view.common.EventDetailsScreen
 import com.example.going.viewmodel.AuthViewModel
+import com.example.going.viewmodel.EventDetailsViewModel
 import com.example.going.viewmodel.MapViewModel
 import com.google.android.gms.maps.MapView
 
 @Composable
-fun MapScreenNavigation(
-    mainNavController: NavHostController,
-    snackbarHostState: SnackbarHostState,
-    authViewModel: AuthViewModel
-) {
+fun MapScreenNavigation() {
     MapScreenNavHost(
-        innerPadding = PaddingValues(),
-        snackbarHostState,
-        authViewModel,
-        mainNavController
+        innerPadding = PaddingValues()
     )
 }
 
 @Composable
 fun MapScreenNavHost(
-    innerPadding: PaddingValues,
-    snackbarHostState: SnackbarHostState,
-    authViewModel: AuthViewModel,
-    mainNavController: NavHostController
+    innerPadding: PaddingValues
 ) {
     val navController = rememberNavController()
     val mapViewModel: MapViewModel = viewModel()
+    val eventDetailsViewModel: EventDetailsViewModel = viewModel()
 
     NavHost(
         navController = navController,
-        startDestination = ProfileScreen.Profile.route,
+        startDestination = MapScreen.Map.route,
         modifier = Modifier.padding(innerPadding)
     ) {
         composable(MapScreen.Map.route) {
             MapScreen(
                 navController=navController,
-                mapViewModel=mapViewModel
+                mapViewModel=mapViewModel,
+                eventDetailsViewModel=eventDetailsViewModel
+            )
+        }
+        composable(MapScreen.EventDetails.route) {
+            EventDetailsScreen(
+                navController=navController,
+                eventDetailsViewModel
             )
         }
     }

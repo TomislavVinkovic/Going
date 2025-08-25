@@ -70,4 +70,6 @@ dependencies {
     implementation(libs.coil.compose)
     implementation(libs.maps.compose)
     implementation(libs.play.services.location)
+    implementation(libs.androidx.foundation.layout.android)
+    implementation(libs.coil.compose)
 }

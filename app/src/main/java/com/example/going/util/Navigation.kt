@@ -73,4 +73,7 @@ sealed class MapScreen(
     object Map: MapScreen(
         "map.map"
     )
+    object EventDetails: MapScreen(
+        "map.event_details"
+    )
 }
