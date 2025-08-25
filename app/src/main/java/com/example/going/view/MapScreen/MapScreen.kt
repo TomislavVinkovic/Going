@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -49,7 +50,9 @@ fun MapScreen(
     val sheetState = rememberModalBottomSheetState()
     val userLocation by mapViewModel.userLocation.collectAsState()
     val context = LocalContext.current
+
     val isDarkTheme = isSystemInDarkTheme()
+    val primaryColor = MaterialTheme.colorScheme.primary
 
     var selectedEvent by remember {mutableStateOf<EventData?>(null)}
 
@@ -126,8 +129,12 @@ fun MapScreen(
             mapStyleOptions = mapStyleOptions
         )
     ) {
-        val customMapMarkerIcon = remember {CustomMapMarkerIcon()}
+
         events.forEach { event ->
+            val customMapMarkerIcon = remember(event.category!!, primaryColor) {
+                // Pass the theme color to the function
+                CustomMapMarkerIcon(event.category!!, primaryColor)
+            }
             Marker(
                 state = rememberMarkerState(position = event.position),
                 onClick = {
