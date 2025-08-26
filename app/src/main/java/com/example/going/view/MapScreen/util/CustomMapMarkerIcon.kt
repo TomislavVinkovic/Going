@@ -3,24 +3,13 @@ package com.example.going.view.MapScreen.util
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.Paint
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import androidx.core.graphics.createBitmap
+import com.example.going.util.CategoryIcons.CategoryIcons
 import com.google.android.gms.maps.model.BitmapDescriptor
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 
 fun CustomMapMarkerIcon(category: String, iconColor: Color): BitmapDescriptor {
-
-    val iconMap = hashMapOf(
-        "party" to "🎉",
-        "concert" to "🎸",
-        "sports" to "🏀",
-        "rave" to "🎤",
-        "food" to "🍔",
-        "conference" to "💼",
-        "other" to "📍"
-    )
 
     val diameter = 96
     // 2. Create the main bitmap for the blip
@@ -46,7 +35,7 @@ fun CustomMapMarkerIcon(category: String, iconColor: Color): BitmapDescriptor {
     val textY = (diameter / 2f) - ((textPaint.descent() + textPaint.ascent()) / 2)
 
     // 6. Draw the emoji onto the canvas
-    canvas.drawText(iconMap[category] ?: "", diameter / 2f, textY, textPaint)
+    canvas.drawText(CategoryIcons[category] ?: "", diameter / 2f, textY, textPaint)
 
     return BitmapDescriptorFactory.fromBitmap(bitmap)
 }

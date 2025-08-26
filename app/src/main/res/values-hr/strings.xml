@@ -53,6 +53,8 @@
     <string name="map_screen_event_start">Početak</string>
     <string name="map_screen_event_end">Završetak</string>
     <string name="map_screen_more_info">Više informacija</string>
+    <string name="map_screen_search_icon_description">Pretraga</string>
+    <string name="map_screen_search_events_placeholder">Pretraga</string>
 
     <!-- Translations for the Event details screen -->
     <string name="event_details_screen_event_name">Ime eventa</string>

@@ -76,4 +76,7 @@ sealed class MapScreen(
     object EventDetails: MapScreen(
         "map.event_details"
     )
+    object Search: MapScreen(
+        "map.search"
+    )
 }

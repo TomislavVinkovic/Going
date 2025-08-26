@@ -2,23 +2,17 @@ package com.example.going.view.MapScreen
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.going.util.MapScreen
-import com.example.going.util.ProfileScreen
-import com.example.going.view.MapScreen.MapScreen
-import com.example.going.view.ProfileScreen.ProfileScreen
 import com.example.going.view.common.EventDetailsScreen
-import com.example.going.viewmodel.AuthViewModel
 import com.example.going.viewmodel.EventDetailsViewModel
 import com.example.going.viewmodel.MapViewModel
-import com.google.android.gms.maps.MapView
+import com.example.going.viewmodel.SearchViewModel
 
 @Composable
 fun MapScreenNavigation() {
@@ -34,6 +28,7 @@ fun MapScreenNavHost(
     val navController = rememberNavController()
     val mapViewModel: MapViewModel = viewModel()
     val eventDetailsViewModel: EventDetailsViewModel = viewModel()
+    val searchViewModel: SearchViewModel = viewModel()
 
     NavHost(
         navController = navController,
@@ -51,6 +46,12 @@ fun MapScreenNavHost(
             EventDetailsScreen(
                 navController=navController,
                 eventDetailsViewModel
+            )
+        }
+        composable(MapScreen.Search.route) {
+            SearchScreen(
+                navController=navController,
+                searchViewModel=searchViewModel
             )
         }
     }

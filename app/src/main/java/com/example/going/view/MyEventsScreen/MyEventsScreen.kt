@@ -8,5 +8,5 @@ import com.example.going.view.AppMainScreenPlaceholder
 
 @Composable
 fun MyEventsScreen(navController: NavController) {
-    AppMainScreenPlaceholder(stringResource(R.string.screen_title_my_events))
+
 }

@@ -72,4 +72,6 @@ dependencies {
     implementation(libs.play.services.location)
     implementation(libs.androidx.foundation.layout.android)
     implementation(libs.coil.compose)
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.functions)
 }

@@ -5,7 +5,10 @@ import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
@@ -20,9 +23,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.maps.android.compose.GoogleMap
@@ -35,8 +40,9 @@ import com.example.going.model.EventData
 import com.example.going.util.MapScreen
 import com.example.going.view.MapScreen.util.CustomMapMarkerIcon
 import com.example.going.view.MapScreen.util.EventModalBottomSheet
-import com.example.going.view.common.EventDetailsScreen
+import com.example.going.view.MapScreen.util.SearchAppBar
 import com.example.going.viewmodel.EventDetailsViewModel
+import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -46,6 +52,11 @@ fun MapScreen(
     mapViewModel: MapViewModel = viewModel(),
     eventDetailsViewModel: EventDetailsViewModel = viewModel()
 ) {
+
+    val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+    val selectedLat = savedStateHandle?.get<Double>("selected_event_lat")
+    val selectedLng = savedStateHandle?.get<Double>("selected_event_lng")
+
     val events by mapViewModel.events.collectAsState()
     val sheetState = rememberModalBottomSheetState()
     val userLocation by mapViewModel.userLocation.collectAsState()
@@ -121,47 +132,71 @@ fun MapScreen(
         }
     }
 
-    GoogleMap(
-        modifier = Modifier.fillMaxSize(),
-        cameraPositionState = cameraPositionState,
-        properties = MapProperties(
-            isMyLocationEnabled = hasLocationPermission,
-            mapStyleOptions = mapStyleOptions
-        )
-    ) {
-
-        events.forEach { event ->
-            val customMapMarkerIcon = remember(event.category!!, primaryColor) {
-                // Pass the theme color to the function
-                CustomMapMarkerIcon(event.category!!, primaryColor)
-            }
-            Marker(
-                state = rememberMarkerState(position = event.position),
-                onClick = {
-                    selectedEvent = event
-                    true
-                },
-                icon = customMapMarkerIcon,
-                anchor = Offset(0.5f, 0.5f)
+    LaunchedEffect(selectedLat, selectedLng) {
+        if(selectedLat != null && selectedLng != null) {
+            val eventPosition = LatLng(selectedLat, selectedLng)
+            cameraPositionState.animate(
+                update = CameraUpdateFactory.newLatLngZoom(eventPosition, 14f),
+                durationMs = 1000
             )
+            // Clear saved state data
+            savedStateHandle.remove<Double>("selected_event_lat")
+            savedStateHandle.remove<Double>("selected_event_lng")
         }
     }
 
-    if(selectedEvent != null) {
-        ModalBottomSheet(
-            onDismissRequest = {
-                selectedEvent = null
-            },
-            sheetState=sheetState
+    Box(modifier = Modifier.fillMaxSize()) {
+        GoogleMap(
+            modifier = Modifier.fillMaxSize(),
+            cameraPositionState = cameraPositionState,
+            properties = MapProperties(
+                isMyLocationEnabled = hasLocationPermission,
+                mapStyleOptions = mapStyleOptions
+            )
         ) {
-            EventModalBottomSheet(
-                selectedEvent,
-                onButtonClick={
-                    eventDetailsViewModel.setEventId(selectedEvent!!.id)
-                    navController.navigate(MapScreen.EventDetails.route)
+
+            events.forEach { event ->
+                val customMapMarkerIcon = remember(event.category!!, primaryColor) {
+                    // Pass the theme color to the function
+                    CustomMapMarkerIcon(event.category!!, primaryColor)
                 }
-            )
+                Marker(
+                    state = rememberMarkerState(position = event.position),
+                    onClick = {
+                        selectedEvent = event
+                        true
+                    },
+                    icon = customMapMarkerIcon,
+                    anchor = Offset(0.5f, 0.5f)
+                )
+            }
         }
+
+        if(selectedEvent != null) {
+            ModalBottomSheet(
+                onDismissRequest = {
+                    selectedEvent = null
+                },
+                sheetState=sheetState
+            ) {
+                EventModalBottomSheet(
+                    selectedEvent,
+                    onButtonClick={
+                        eventDetailsViewModel.setEventId(selectedEvent!!.id)
+                        navController.navigate(MapScreen.EventDetails.route)
+                    }
+                )
+            }
+        }
+
+        SearchAppBar(
+            onSearchClicked = {
+                navController.navigate(MapScreen.Search.route)
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .align(Alignment.TopCenter)
+                .padding(16.dp)
+        )
     }
-    
 }
