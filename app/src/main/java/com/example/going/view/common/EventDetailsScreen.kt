@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Star
@@ -28,6 +29,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SuggestionChip
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -37,6 +40,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
 import com.example.going.viewmodel.EventDetailsViewModel
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -52,6 +58,7 @@ import com.example.going.R
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import coil.compose.AsyncImage
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -59,8 +66,12 @@ fun EventDetailsScreen(
     navController: NavController,
     eventDetailsViewModel: EventDetailsViewModel = viewModel()
 ) {
+    val context = LocalContext.current
     val event by eventDetailsViewModel.eventDetails.collectAsState()
     val isUserInterested by eventDetailsViewModel.isUserInterested.collectAsState()
+    val uiState by eventDetailsViewModel.uiState.collectAsState()
+    val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
         topBar = {
@@ -80,27 +91,45 @@ fun EventDetailsScreen(
             // --- MODIFIED: The button is now dynamic ---
             ExtendedFloatingActionButton(
                 onClick = {
-                    eventDetailsViewModel.toggleInterest()
+                    eventDetailsViewModel.toggleInterest(context)
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            if (isUserInterested) context.getString(R.string.event_details_screen_interested)
+                            else context.getString(R.string.event_details_screen_uninterested),
+                            duration = SnackbarDuration.Short
+                        )
+                    }
                 },
                 // Change the icon based on the interest state
                 icon = {
-                    Icon(
-                        if (isUserInterested) Icons.Filled.Check else Icons.Filled.Star,
-                        contentDescription = null
-                    )
+                    if(!uiState.isLoading) {
+                        Icon(
+                            if (isUserInterested) Icons.Filled.Close else Icons.Filled.Star,
+                            contentDescription = null
+                        )
+                    }
                 },
                 // Change the text based on the interest state
                 text = {
-                    Text(
-                        if (isUserInterested) stringResource(R.string.event_details_cancel_interest)
-                        else stringResource(R.string.event_details_screen_im_interested_button)
-                    )
+                    if(uiState.isLoading) {
+                        CircularProgressIndicator(
+                            color = if(isUserInterested) MaterialTheme.colorScheme.primary
+                                else MaterialTheme.colorScheme.secondary
+                        )
+                    }
+                    else {
+                        Text(
+                            if (isUserInterested) stringResource(R.string.event_details_cancel_interest)
+                            else stringResource(R.string.event_details_screen_im_interested_button)
+                        )
+                    }
                 },
                 // Change the color based on the interest state
                 containerColor = if (isUserInterested) MaterialTheme.colorScheme.primary
                 else MaterialTheme.colorScheme.primaryContainer,
                 contentColor = if (isUserInterested) MaterialTheme.colorScheme.onPrimary
-                else MaterialTheme.colorScheme.onPrimaryContainer
+                else MaterialTheme.colorScheme.onPrimaryContainer,
+                modifier = Modifier.fillMaxWidth()
             )
         },
         floatingActionButtonPosition = FabPosition.Center
@@ -153,7 +182,7 @@ fun EventDetailsScreen(
 
                 item {
                     Spacer(modifier = Modifier.height(24.dp))
-                    Text("Opis", style = MaterialTheme.typography.titleLarge)
+                    Text(stringResource(R.string.event_details_screen_description), style = MaterialTheme.typography.titleLarge)
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = event!!.description ?: stringResource(R.string.event_details_screen_no_description),

@@ -1,7 +1,9 @@
 package com.example.going.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.going.R
 import com.example.going.model.EventData
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Firebase
@@ -25,7 +27,7 @@ class EventDetailsViewModel: ViewModel() {
     private val auth = Firebase.auth
 
     private val _eventId = MutableStateFlow<String?>(null)
-    val eventId = MutableStateFlow<String?>(null)
+    val eventId: StateFlow<String?> = _eventId
 
     private val _eventDetails = MutableStateFlow<EventData?>(null)
     val eventDetails: StateFlow<EventData?> = _eventDetails
@@ -70,13 +72,13 @@ class EventDetailsViewModel: ViewModel() {
         }
     }
 
-    private fun checkUserInterest(eventId: String) {
+    fun checkUserInterest() {
         val userId = auth.currentUser?.uid ?: return
         viewModelScope.launch {
             try {
                 val query = firestore.collection("eventInterests")
                     .whereEqualTo("userId", userId)
-                    .whereEqualTo("eventId", eventId)
+                    .whereEqualTo("eventId", eventId.value)
                     .limit(1)
                     .get()
                     .await()
@@ -88,10 +90,11 @@ class EventDetailsViewModel: ViewModel() {
         }
     }
 
-    fun toggleInterest() {
+    fun toggleInterest(context: Context) {
         val userId = auth.currentUser?.uid ?: return
         viewModelScope.launch {
             try {
+                _uiState.value = UIState(isLoading=true)
                 val interestDocRef = firestore.collection("eventInterests")
                     .whereEqualTo("userId", userId)
                     .whereEqualTo("eventId", _eventId.value)
@@ -108,14 +111,22 @@ class EventDetailsViewModel: ViewModel() {
                     )
                     firestore.collection("eventInterests").add(newInterest).await()
                     _isUserInterested.value = true
+
+                    val successMessage = context.getString(R.string.data_update_success)
+                    _uiState.value = UIState(isSuccess = successMessage)
                 } else {
                     // User IS interested, so REMOVE their interest
                     val docId = snapshot.documents.first().id
                     firestore.collection("eventInterests").document(docId).delete().await()
                     _isUserInterested.value = false
+
+                    val successMessage = context.getString(R.string.data_update_success)
+                    _uiState.value = UIState(isSuccess = successMessage)
+
                 }
             } catch (e: Exception) {
-                // TODO: Handle error, maybe show a snackbar
+                val errorMessage = context.getString(R.string.data_update_failure)
+                _uiState.value = UIState(isError = errorMessage)
             }
         }
     }
@@ -125,5 +136,6 @@ class EventDetailsViewModel: ViewModel() {
         _eventId.value = id
         _eventDetails.value = null
         getEventById()
+        checkUserInterest()
     }
 }

@@ -71,6 +71,8 @@
     <string name="event_details_screen_tags">Tags</string>
     <string name="event_details_interested_users">Interested users</string>
     <string name="event_details_screen_more_info">More info</string>
+    <string name="event_details_screen_interested">Event added to interests!</string>
+    <string name="event_details_screen_uninterested">Event removed from interests!</string>
 
     <!-- Data operations -->
     <string name="data_update_success">Operation successful</string>
