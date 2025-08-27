@@ -38,6 +38,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.example.going.viewmodel.ProfileUserData
@@ -68,11 +69,6 @@ fun ProfileScreen(
 
     LaunchedEffect(logoutState) {
         if (logoutState.isSuccess != null) {
-            mainNavController.navigate(
-                Screen.Auth.route
-            ) {
-                popUpTo(0) { inclusive = true }
-            }
             authViewModel.clearLogoutState()
         }
         else if(logoutState.isError != null) {
@@ -82,9 +78,6 @@ fun ProfileScreen(
 
     fun openLogoutConfirmationDialog() {
         showLogoutConfirmationDialog = true
-    }
-    fun openLogoutErrorDialog() {
-        showLogoutErrorDialog = true
     }
 
     fun logout() {

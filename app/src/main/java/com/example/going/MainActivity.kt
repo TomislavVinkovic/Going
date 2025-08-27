@@ -5,6 +5,8 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.navigation.compose.rememberNavController
 import com.example.going.ui.theme.GoingTheme
@@ -30,31 +32,18 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             GoingTheme {
-                val startDestination = if(authViewModel.isUserLoggedIn.value) {
-                    Screen.MainApp.route
+                val isLoggedIn by authViewModel.isUserLoggedIn.collectAsState()
+
+                if (isLoggedIn) {
+                    // If logged in, the ONLY thing that exists is the main app.
+                    val mainNavController = rememberNavController()
+                    MainAppScreen(authViewModel, mainNavController = mainNavController)
                 } else {
-                    Screen.Auth.route
+                    // If not logged in, the ONLY thing that exists is the auth flow.
+                    val authNavController = rememberNavController()
+                    AuthScreenNavigation(authViewModel, mainNavController = authNavController)
                 }
-
-                AppNavigation(
-                    startDestination = startDestination,
-                    authViewModel
-                )
             }
-        }
-    }
-}
-
-@Composable
-fun AppNavigation(startDestination: String, authViewModel: AuthViewModel) {
-    val navController = rememberNavController()
-
-    NavHost(navController = navController, startDestination = startDestination) {
-        composable(route = Screen.Auth.route) {
-            AuthScreenNavigation(authViewModel, mainNavController = navController)
-        }
-        composable(route = Screen.MainApp.route) {
-            MainAppScreen(authViewModel, mainNavController = navController)
         }
     }
 }

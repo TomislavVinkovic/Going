@@ -118,11 +118,6 @@ fun GreetingScreen(
     }
 
     LaunchedEffect(googleSignInState) {
-        if(googleSignInState.isSuccess != null) {
-            mainNavController.navigate(Screen.MainApp.route) {
-                popUpTo(Screen.Auth.route) { inclusive = true }
-            }
-        }
         if(googleSignInState.isError != null) {
             showErrorDialog = true
         }

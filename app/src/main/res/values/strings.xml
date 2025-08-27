@@ -60,6 +60,7 @@
     <string name="map_screen_event_end">Ends at</string>
     <string name="map_screen_more_info">More info</string>
     <string name="map_screen_search_icon_description">Search</string>
+    <string name="map_screen_clear_icon_description">Clear</string>
     <string name="map_screen_search_events_placeholder">Search</string>
 
     <!-- Translations for the Event details screen -->

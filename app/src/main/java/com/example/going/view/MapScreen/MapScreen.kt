@@ -1,9 +1,13 @@
 package com.example.going.view.MapScreen
 
 import android.Manifest
+import android.R.attr.enabled
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.AnimatedVisibilityScope
+import androidx.compose.animation.ExperimentalSharedTransitionApi
+import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,6 +33,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
@@ -40,19 +45,21 @@ import com.example.going.model.EventData
 import com.example.going.util.MapScreen
 import com.example.going.view.MapScreen.util.CustomMapMarkerIcon
 import com.example.going.view.MapScreen.util.EventModalBottomSheet
-import com.example.going.view.MapScreen.util.SearchAppBar
+import com.example.going.view.MapScreen.util.SearchBarUI
 import com.example.going.viewmodel.EventDetailsViewModel
+import com.example.going.viewmodel.MapEvent
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
-
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
     navController: NavController,
     mapViewModel: MapViewModel = viewModel(),
-    eventDetailsViewModel: EventDetailsViewModel = viewModel()
+    eventDetailsViewModel: EventDetailsViewModel = viewModel(),
+    sharedTransitionScope: SharedTransitionScope,
+    animatedVisibilityScope: AnimatedVisibilityScope
 ) {
-
+    val cameraPositionState by mapViewModel.cameraPositionState.collectAsStateWithLifecycle()
     val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
     val selectedLat = savedStateHandle?.get<Double>("selected_event_lat")
     val selectedLng = savedStateHandle?.get<Double>("selected_event_lng")
@@ -60,6 +67,7 @@ fun MapScreen(
     val events by mapViewModel.events.collectAsState()
     val sheetState = rememberModalBottomSheetState()
     val userLocation by mapViewModel.userLocation.collectAsState()
+    val isFirstLoad by mapViewModel.isFirstLoad.collectAsState()
     val context = LocalContext.current
 
     val isDarkTheme = isSystemInDarkTheme()
@@ -93,15 +101,15 @@ fun MapScreen(
         }
     )
 
-    val cameraPositionState = rememberCameraPositionState()
     LaunchedEffect(userLocation) {
         userLocation?.let {
-            cameraPositionState.animate(
-                update = CameraUpdateFactory.newLatLngZoom(it, 14f),
-                durationMs = 1000
-            )
+            if(isFirstLoad) {
+                mapViewModel.moveToLocation(it.latitude, it.longitude)
+                mapViewModel.setFirstLoad(false)
+            }
+
         }
-        }
+    }
 
     val mapStyleOptions = remember(isDarkTheme) {
         if(isDarkTheme) {
@@ -132,13 +140,22 @@ fun MapScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        mapViewModel.mapEvents.collect { event ->
+            when (event) {
+                is MapEvent.AnimateToLocation -> {
+                    cameraPositionState.animate(
+                        CameraUpdateFactory.newLatLngZoom(event.latLng, 15f),
+                        1000
+                    )
+                }
+            }
+        }
+    }
+
     LaunchedEffect(selectedLat, selectedLng) {
         if(selectedLat != null && selectedLng != null) {
-            val eventPosition = LatLng(selectedLat, selectedLng)
-            cameraPositionState.animate(
-                update = CameraUpdateFactory.newLatLngZoom(eventPosition, 14f),
-                durationMs = 1000
-            )
+            mapViewModel.moveToLocation(selectedLat, selectedLng)
             // Clear saved state data
             savedStateHandle.remove<Double>("selected_event_lat")
             savedStateHandle.remove<Double>("selected_event_lng")
@@ -189,14 +206,19 @@ fun MapScreen(
             }
         }
 
-        SearchAppBar(
+        SearchBarUI(
+            searchQuery = "",
+            onQueryChanged = {},
             onSearchClicked = {
                 navController.navigate(MapScreen.Search.route)
             },
+            sharedTransitionScope,
+            animatedVisibilityScope,
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.TopCenter)
-                .padding(16.dp)
+                .padding(16.dp),
+            enabled = false
         )
     }
 }

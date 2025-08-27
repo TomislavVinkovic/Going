@@ -83,6 +83,8 @@ class AuthViewModel: ViewModel() {
                 if(isNewUser) {
                     saveGoogleUserToFirestore(firebaseUser)
                 }
+
+                _isUserLoggedIn.value = true
                 _googleSignInState.value = AuthState(isSuccess = "Prijava uspješna")
             } catch(e: Exception) {
                 _googleSignInState.value = AuthState(isError = e.message ?: "Nepoznata greška")
@@ -90,7 +92,7 @@ class AuthViewModel: ViewModel() {
         }
     }
 
-    suspend fun registerUser(
+    fun registerUser(
         email: String,
         password: String,
         firstname: String,
@@ -128,6 +130,7 @@ class AuthViewModel: ViewModel() {
                 val oneTapClient = Identity.getSignInClient(context)
                 oneTapClient.signOut().await()
 
+                _isUserLoggedIn.value = false;
                 _logoutState.value = AuthState(isSuccess = "Odjava uspješna")
             } catch (e: Exception) {
                 _logoutState.value = AuthState(isError = e.message)

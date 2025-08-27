@@ -124,11 +124,6 @@ fun RegisterScreen(
         if(registerState.isError != null) {
             showErrorDialog = true
         }
-        if(registerState.isSuccess != null) {
-            mainNavController.navigate(Screen.MainApp.route) {
-                popUpTo(0) { inclusive = true }
-            }
-        }
     }
 
     if(showErrorDialog) {

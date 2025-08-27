@@ -69,11 +69,6 @@ fun LoginScreen(
     }
 
     LaunchedEffect(loginState) {
-        if(loginState.isSuccess != null) {
-            mainNavController.navigate(Screen.MainApp.route) {
-                popUpTo(AuthScreen.Greeting.route) {inclusive = true}
-            }
-        }
         if(loginState.isError != null) {
             showErrorDialog = true
         }
