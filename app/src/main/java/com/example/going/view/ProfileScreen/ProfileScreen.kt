@@ -41,8 +41,8 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
-import com.example.going.viewmodel.ProfileUserData
 import com.example.going.R
+import com.example.going.model.ProfileUserData
 import com.example.going.util.ProfileScreen
 import com.example.going.util.Screen
 import com.example.going.view.common.ConfirmDialog

@@ -167,6 +167,7 @@ class AuthViewModel: ViewModel() {
             "username" to (firebaseUser.email?.split("@")?.first() ?: ""),
             "email" to firebaseUser.email,
             "isPubliclyInterested" to true,
+            "avatarUrl" to firebaseUser.photoUrl?.toString(),
             "createdAt" to System.currentTimeMillis()
         )
 

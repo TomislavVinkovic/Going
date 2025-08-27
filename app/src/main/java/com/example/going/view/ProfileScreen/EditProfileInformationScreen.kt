@@ -160,7 +160,7 @@ fun EditProfileInformationScreen(
                     enabled = !updateUserDataState.isLoading,
                     modifier = Modifier.fillMaxWidth()
                 ) {
-                    Text("Spremi")
+                    Text(stringResource(R.string.profile_screen_save))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

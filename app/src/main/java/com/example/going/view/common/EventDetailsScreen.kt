@@ -1,6 +1,7 @@
 package com.example.going.view.common
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -11,8 +12,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -27,6 +30,7 @@ import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.FabPosition
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarDuration
@@ -58,6 +62,8 @@ import com.example.going.R
 import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import coil.compose.AsyncImage
+import com.example.going.model.ProfileUserData
+import com.example.going.view.MapScreen.util.formatTimestamp
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -68,10 +74,16 @@ fun EventDetailsScreen(
 ) {
     val context = LocalContext.current
     val event by eventDetailsViewModel.eventDetails.collectAsState()
+    val interestedUsers by eventDetailsViewModel.interestedUsers.collectAsState()
     val isUserInterested by eventDetailsViewModel.isUserInterested.collectAsState()
-    val uiState by eventDetailsViewModel.uiState.collectAsState()
+
     val scope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    val eventFetchState by eventDetailsViewModel.eventFetchState.collectAsState()
+    val toggleInterestState by eventDetailsViewModel.toggleInterestState.collectAsState()
+    val checkInterestState by eventDetailsViewModel.checkInterestState.collectAsState()
+    val userListFetchState by eventDetailsViewModel.userListFetchState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -102,7 +114,7 @@ fun EventDetailsScreen(
                 },
                 // Change the icon based on the interest state
                 icon = {
-                    if(!uiState.isLoading) {
+                    if(!toggleInterestState.isLoading) {
                         Icon(
                             if (isUserInterested) Icons.Filled.Close else Icons.Filled.Star,
                             contentDescription = null
@@ -111,7 +123,7 @@ fun EventDetailsScreen(
                 },
                 // Change the text based on the interest state
                 text = {
-                    if(uiState.isLoading) {
+                    if(toggleInterestState.isLoading) {
                         CircularProgressIndicator(
                             color = if(isUserInterested) MaterialTheme.colorScheme.primary
                                 else MaterialTheme.colorScheme.secondary
@@ -129,12 +141,14 @@ fun EventDetailsScreen(
                 else MaterialTheme.colorScheme.primaryContainer,
                 contentColor = if (isUserInterested) MaterialTheme.colorScheme.onPrimary
                 else MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
             )
         },
         floatingActionButtonPosition = FabPosition.Center
     ) { innerPadding ->
-        if (event == null) {
+        if (eventFetchState.isLoading || event == null) {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 CircularProgressIndicator()
             }
@@ -202,10 +216,32 @@ fun EventDetailsScreen(
                             SuggestionChip(onClick = {}, label = { Text("#${tag}") })
                         }
                     }
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
                 item {
-                    Spacer(modifier = Modifier.height(24.dp))
                     Text(stringResource(R.string.event_details_interested_users), style = MaterialTheme.typography.titleLarge)
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
+                if (userListFetchState.isLoading) {
+                    item {
+                        Box(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp), contentAlignment = Alignment.Center) {
+                            CircularProgressIndicator()
+                        }
+                    }
+                } else {
+                    if (interestedUsers.isNotEmpty()) {
+                        items(interestedUsers) { user ->
+                            InterestedUserListItem(user)
+                        }
+                    } else {
+                        item {
+                            Box(modifier = Modifier.fillMaxWidth().padding(vertical = 16.dp), contentAlignment = Alignment.Center) {
+                                Text(stringResource(R.string.event_details_screen_no_interested_users))
+                            }
+                        }
+                    }
+                }
+                item {
                     Spacer(modifier = Modifier.height(100.dp))
                 }
             }
@@ -224,6 +260,26 @@ private fun EventInfoRow(icon: ImageVector, text: String) {
         Spacer(modifier = Modifier.width(16.dp))
         Text(text = text, style = MaterialTheme.typography.bodyLarge)
     }
+}
+
+@Composable
+private fun InterestedUserListItem(user: ProfileUserData) {
+    ListItem(
+        headlineContent = {Text("${user.firstname} ${user.lastname}")},
+        supportingContent = {Text(user.username ?: "")},
+        leadingContent = {
+            AsyncImage(
+                model = user.avatarUrl,
+                placeholder = painterResource(id = R.drawable.ic_launcher_background),
+                error = painterResource(id = R.drawable.ic_launcher_background),
+                contentDescription = null,
+                modifier = Modifier
+                    .size(48.dp)
+                    .clip(RoundedCornerShape(50)),
+                contentScale = ContentScale.Crop
+            )
+        }
+    )
 }
 
 @Composable

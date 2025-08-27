@@ -22,6 +22,7 @@
     <string name="profile_screen_logout">Odjava</string>
     <string name="profile_screen_logout_confirm">Da, odjavi me</string>
     <string name="profile_screen_logout_desc">Jeste li sigurni da se želite odjaviti?</string>
+    <string name="profile_screen_save">Spremi</string>
 
     <!-- Translations for the login screen -->
     <string name="login_screen_title">Dobrodošli natrag</string>
@@ -70,6 +71,8 @@
     <string name="event_details_screen_more_info">Više informacija</string>
     <string name="event_details_screen_interested">Event dodan u interese!</string>
     <string name="event_details_screen_uninterested">Event maknut iz interesa!</string>
+    <string name="event_details_screen_no_interested_users">Trenutno se nijedan korisnik nije zainteresirao za ovaj event</string>
+    <string name="event_details_screen_user">Korisnik</string>
 
     <!-- Data operations -->
     <string name="data_update_success">Radnja uspješno obavljena</string>

@@ -2,6 +2,7 @@ package com.example.going.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.going.model.ProfileUserData
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.ListenerRegistration
@@ -10,15 +11,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
-
-data class ProfileUserData(
-    val uid: String,
-    val firstname: String?,
-    val lastname: String?,
-    val username: String?,
-    val avatarUrl: String?,
-    val isPubliclyInterested: Boolean
-)
 
 data class EditProfileUserData(
     val firstname: String?,
@@ -75,7 +67,8 @@ class ProfileViewModel: ViewModel() {
                         firstname = snapshot.getString("firstname"),
                         lastname = snapshot.getString("lastname"),
                         username = snapshot.getString("username"),
-                        avatarUrl = snapshot.getString("avatarUrl") ?: auth.currentUser?.photoUrl?.toString(),
+                        avatarUrl = snapshot.getString("avatarUrl")
+                            ?: auth.currentUser?.photoUrl?.toString(),
                         isPubliclyInterested = snapshot.getBoolean("isPubliclyInterested") ?: true
                     )
                 }
