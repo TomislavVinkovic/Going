@@ -95,6 +95,15 @@
     <string name="username_validation_error">The username must be at least 6 characters long</string>
     <string name="repeat_password_validation_error">Passwords do not match</string>
 
+    <!-- Category name strings -->
+    <string name="category_party">Party</string>
+    <string name="category_concert">Concert</string>
+    <string name="category_sports">Sports</string>
+    <string name="category_rave">Rave</string>
+    <string name="category_food">Food</string>
+    <string name="category_conference">Conference</string>
+    <string name="category_other">Other</string>
+
     <!-- Misc strings -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>

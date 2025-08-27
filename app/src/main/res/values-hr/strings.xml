@@ -89,6 +89,14 @@
     </string>
     <string name="username_validation_error">Korisničko ime mora sadržavati barem 6 znakova</string>
 
+    <string name="category_party">Zabava</string>
+    <string name="category_concert">Koncert</string>
+    <string name="category_sports">Sport</string>
+    <string name="category_rave">Rave</string>
+    <string name="category_food">Hrana</string>
+    <string name="category_conference">Konferencija</string>
+    <string name="category_other">Ostalo</string>
+
     <!-- Misc strings -->
     <string name="ok">U redu</string>
     <string name="cancel">Otkaži</string>

@@ -1,7 +1,6 @@
 package com.example.going.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import com.example.going.model.ProfileUserData
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
@@ -9,7 +8,6 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 data class EditProfileUserData(
