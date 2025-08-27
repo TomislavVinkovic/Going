@@ -1,12 +1,14 @@
 package com.example.going.view.MyEventsScreen
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.res.stringResource
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
-import com.example.going.R
-import com.example.going.view.AppMainScreenPlaceholder
+import com.example.going.viewmodel.MyEventsViewModel
 
 @Composable
-fun MyEventsScreen(navController: NavController) {
+fun MyEventsScreen(
+    navController: NavController,
+    myEventsViewModel: MyEventsViewModel = viewModel()
+) {
 
 }

@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
@@ -35,6 +36,10 @@ import com.example.going.view.MyEventsScreen.MyEventsScreen
 import com.example.going.view.NotificationsScreen.NotificationsScreen
 import com.example.going.view.ProfileScreen.ProfileScreenNavigation
 import com.example.going.viewmodel.AuthViewModel
+import com.example.going.viewmodel.EventDetailsViewModel
+import com.example.going.viewmodel.MapViewModel
+import com.example.going.viewmodel.MyEventsViewModel
+import com.example.going.viewmodel.SearchViewModel
 
 private val screens = listOf(
     // MainScreen.Friends,
@@ -90,20 +95,34 @@ fun MainAppNavHost(
     snackbarHostState: SnackbarHostState,
     authViewModel: AuthViewModel
 ) {
+
+    val mapViewModel: MapViewModel = viewModel()
+    val myEventsViewModel: MyEventsViewModel = viewModel()
+
     NavHost(
         navController = navController,
         startDestination = MainScreen.Map.route,
         modifier = Modifier.padding(innerPadding)
     ) {
+
+
         // Friends screen route
         // composable(MainScreen.Friends.route) { FriendsScreen(navController = navController) }
 
         // Notifications screen route
         // composable(MainScreen.Notifications.route) { NotificationsScreen(navController = navController) }
 
-        composable(MainScreen.MyEvents.route) { MyEventsScreen(navController = navController) }
-        composable(MainScreen.Map.route) { MapScreenNavigation() }
-
+        composable(MainScreen.MyEvents.route) {
+            MyEventsScreen(
+                navController = navController,
+                myEventsViewModel = myEventsViewModel
+            )
+        }
+        composable(MainScreen.Map.route) {
+            MapScreenNavigation(
+                mapViewModel = mapViewModel
+            )
+        }
 
 
         // Profile screen routes

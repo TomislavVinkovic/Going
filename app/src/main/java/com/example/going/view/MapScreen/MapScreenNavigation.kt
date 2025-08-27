@@ -20,8 +20,11 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 
 @Composable
-fun MapScreenNavigation() {
+fun MapScreenNavigation(
+    mapViewModel: MapViewModel
+) {
     MapScreenNavHost(
+        mapViewModel = mapViewModel,
         innerPadding = PaddingValues()
     )
 }
@@ -29,10 +32,10 @@ fun MapScreenNavigation() {
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MapScreenNavHost(
+    mapViewModel: MapViewModel,
     innerPadding: PaddingValues
 ) {
     val navController = rememberNavController()
-    val mapViewModel: MapViewModel = viewModel()
     val eventDetailsViewModel: EventDetailsViewModel = viewModel()
     val searchViewModel: SearchViewModel = viewModel()
 
