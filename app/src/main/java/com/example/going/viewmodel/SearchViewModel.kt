@@ -5,6 +5,7 @@ import android.util.Log.e
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.going.model.EventData
+import com.example.going.model.util.DataFetchState
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.Query
@@ -16,12 +17,6 @@ import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import java.util.Locale
-
-data class DataFetchState(
-    var isLoading: Boolean = false,
-    var isError: String? = null,
-    var isSuccess: String? = null
-)
 
 class SearchViewModel: ViewModel() {
     private val firebase = Firebase
