@@ -1,5 +1,6 @@
 package com.example.going.view
 
+import android.R.attr.onClick
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -36,10 +37,10 @@ import com.example.going.view.ProfileScreen.ProfileScreenNavigation
 import com.example.going.viewmodel.AuthViewModel
 
 private val screens = listOf(
-    MainScreen.Friends,
+    // MainScreen.Friends,
     MainScreen.MyEvents,
     MainScreen.Map,
-    MainScreen.Notifications,
+    // MainScreen.Notifications,
     MainScreen.Profile
 )
 
@@ -94,14 +95,16 @@ fun MainAppNavHost(
         startDestination = MainScreen.Map.route,
         modifier = Modifier.padding(innerPadding)
     ) {
-        composable(MainScreen.Friends.route) { FriendsScreen(navController = navController) }
-        composable(MainScreen.MyEvents.route) { MyEventsScreen(navController = navController) }
-
-
-        composable(MainScreen.Map.route) { MapScreenNavigation() }
+        // Friends screen route
+        // composable(MainScreen.Friends.route) { FriendsScreen(navController = navController) }
 
         // Notifications screen route
-        composable(MainScreen.Notifications.route) { NotificationsScreen(navController = navController) }
+        // composable(MainScreen.Notifications.route) { NotificationsScreen(navController = navController) }
+
+        composable(MainScreen.MyEvents.route) { MyEventsScreen(navController = navController) }
+        composable(MainScreen.Map.route) { MapScreenNavigation() }
+
+
 
         // Profile screen routes
         composable(MainScreen.Profile.route) {
@@ -124,6 +127,9 @@ fun AppBottomNavigation(navController: NavController) {
             NavigationBarItem(
                 icon = {Icon(screen.icon, contentDescription = stringResource(screen.titleResId))},
                 selected = currentRoute == screen.route,
+                label = {
+                    Text(stringResource(screen.titleResId))
+                },
                 onClick = {
                     navController.navigate(screen.route) {
                         navController.graph.startDestinationId
