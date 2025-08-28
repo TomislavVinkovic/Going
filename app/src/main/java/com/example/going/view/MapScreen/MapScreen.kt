@@ -9,6 +9,7 @@ import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -47,6 +48,8 @@ import com.example.going.view.common.SearchBarUI
 import com.example.going.viewmodel.EventDetailsViewModel
 import com.example.going.viewmodel.MapEvent
 import com.google.android.gms.maps.model.MapStyleOptions
+import com.google.maps.android.compose.MapUiSettings
+
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
@@ -166,7 +169,9 @@ fun MapScreen(
             properties = MapProperties(
                 isMyLocationEnabled = hasLocationPermission,
                 mapStyleOptions = mapStyleOptions
-            )
+            ),
+            contentPadding = PaddingValues(top = 80.dp, end = 16.dp, bottom = 16.dp),
+            uiSettings = remember { MapUiSettings(zoomControlsEnabled = false) }
         ) {
 
             events.forEach { event ->
