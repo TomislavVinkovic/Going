@@ -1,7 +1,6 @@
 package com.example.going.view.MapScreen
 
 import android.Manifest
-import android.R.attr.enabled
 import android.content.pm.PackageManager
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -38,17 +37,15 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.maps.android.compose.GoogleMap
 import com.google.maps.android.compose.MapProperties
 import com.google.maps.android.compose.Marker
-import com.google.maps.android.compose.rememberCameraPositionState
 import com.google.maps.android.compose.rememberMarkerState
 import com.example.going.R
 import com.example.going.model.EventData
 import com.example.going.util.MapScreen
 import com.example.going.view.MapScreen.util.CustomMapMarkerIcon
 import com.example.going.view.MapScreen.util.EventModalBottomSheet
-import com.example.going.view.MapScreen.util.SearchBarUI
+import com.example.going.view.common.SearchBarUI
 import com.example.going.viewmodel.EventDetailsViewModel
 import com.example.going.viewmodel.MapEvent
-import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -212,12 +209,12 @@ fun MapScreen(
             onSearchClicked = {
                 navController.navigate(MapScreen.Search.route)
             },
-            sharedTransitionScope,
-            animatedVisibilityScope,
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.TopCenter)
                 .padding(16.dp),
+            sharedTransitionScope,
+            animatedVisibilityScope,
             enabled = false
         )
     }

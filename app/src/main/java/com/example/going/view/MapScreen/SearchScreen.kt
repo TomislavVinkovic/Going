@@ -28,10 +28,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.example.going.util.CategoryIcons.CategoryIcons
-import com.example.going.view.MapScreen.util.SearchBarUI
+import com.example.going.view.common.SearchBarUI
 import com.example.going.viewmodel.SearchViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.focus.FocusRequester
+import com.example.going.view.common.CategorySelectorUI
 import com.example.going.view.util.TranslateCategory
 
 
@@ -63,33 +64,21 @@ fun SearchScreen(
             searchQuery = searchQuery,
             onQueryChanged = { searchViewModel.onQueryChanged(it) },
             onSearchClicked = { },
-            sharedTransitionScope,
-            animatedVisibilityScope,
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
+            sharedTransitionScope,
+            animatedVisibilityScope,
             enabled = true,
             focusRequester = focusRequester,
         )
 
         Spacer(Modifier.height(16.dp))
 
-        FlowRow(
-            horizontalArrangement = Arrangement.spacedBy(4.dp), // Space between chips on the same line
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp)
-        ) {
-            CategoryIcons.keys.forEach { category ->
-                FilterChip(
-                    selected = category == selectedCategory,
-                    onClick = { searchViewModel.onCategorySelected(category) },
-                    label = { Text(text = TranslateCategory(category)) },
-                    leadingIcon = {Text(CategoryIcons[category] ?: "")},
-                )
-            }
-        }
+        CategorySelectorUI(
+            selectedCategory=selectedCategory,
+            onClick = { category -> searchViewModel.onCategorySelected(category) }
+        )
 
         Spacer(Modifier.height(16.dp))
 

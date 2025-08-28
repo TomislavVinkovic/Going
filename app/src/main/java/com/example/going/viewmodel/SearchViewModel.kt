@@ -49,7 +49,12 @@ class SearchViewModel: ViewModel() {
         _searchQuery.value = query
     }
     fun onCategorySelected(category: String) {
-        _selectedCategory.value = category
+        if(_selectedCategory.value == category) {
+            _selectedCategory.value = null
+        }
+        else {
+            _selectedCategory.value = category
+        }
     }
 
     private fun searchEvents(
