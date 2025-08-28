@@ -63,9 +63,11 @@ class AuthViewModel: ViewModel() {
             try {
                 auth.signInWithEmailAndPassword(email, password).await()
                 // TODO: Add localization
-                _loginState.value = AuthState(isSuccess = "Prijava uspješna")
+                _loginState.value = AuthState(isSuccess = "Login successful")
+
+                _isUserLoggedIn.value = true
             } catch(e: Exception) {
-                _loginState.value = AuthState(isError = e.message ?: "Nepoznata greška.")
+                _loginState.value = AuthState(isError = e.message ?: "Unknown error.")
             }
         }
     }
@@ -107,16 +109,18 @@ class AuthViewModel: ViewModel() {
                     .get()
                     .await()
                 if(!usernameQuery.isEmpty) {
-                    _registerState.value = AuthState(isError = "Korisničko ime je već zauzeto")
+                    _registerState.value = AuthState(isError = "Username is taken")
                     return@launch
                 }
                 val result = auth.createUserWithEmailAndPassword(email, password).await()
                 val firebaseUser = result.user!!
 
                 saveUserToFirestore(firebaseUser, firstname, lastname, username)
-                _registerState.value = AuthState(isSuccess = "Registracija korisnika uspješna!")
+                _registerState.value = AuthState(isSuccess = "Registration successful!")
+
+                _isUserLoggedIn.value = true
             } catch(e: Exception) {
-                _registerState.value = AuthState(isError = e.message ?: "Nepoznata greška.")
+                _registerState.value = AuthState(isError = e.message ?: "Unknown error.")
             }
         }
     }
