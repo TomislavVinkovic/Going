@@ -60,7 +60,7 @@ class SearchViewModel: ViewModel() {
         }
     }
 
-    private fun searchEvents(
+    private fun     searchEvents(
         query: String,
         category: String?
     ) {
@@ -95,7 +95,7 @@ class SearchViewModel: ViewModel() {
                     }
                 }
                 if(query != null) {
-                    val filteredResults = if(query.isNotBlank()) {
+                    var filteredResults = if(query.isNotBlank()) {
                         val lowerCaseQuery = query.lowercase(Locale.getDefault())
                         eventList.filter { event ->
                             val nameMatch = event.name?.lowercase(Locale.getDefault())
@@ -107,6 +107,11 @@ class SearchViewModel: ViewModel() {
                         }
                     }
                     else eventList
+
+                    val now = com.google.firebase.Timestamp.now()
+                    filteredResults = filteredResults.filter { event ->
+                        event.startTime!! >= now
+                    }
 
                     _searchResults.value = filteredResults
                     _searchState.value = DataFetchState(isSuccess = "Data fetched successfully")

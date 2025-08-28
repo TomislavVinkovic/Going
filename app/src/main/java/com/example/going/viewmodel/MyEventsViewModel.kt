@@ -77,9 +77,11 @@ class MyEventsViewModel: ViewModel() {
                     return@launch
                 }
                 var eventsQuery: Query = firestore.collection("events")
+
                 if (category != null) {
                     eventsQuery = eventsQuery.whereEqualTo("category", category)
                 }
+
                 val snapshot = eventsQuery
                     .whereIn(FieldPath.documentId(), userInterests)
                     .get()
@@ -103,7 +105,7 @@ class MyEventsViewModel: ViewModel() {
                     }
                 }
 
-                val filteredResults = if(query.isNotBlank()) {
+                var filteredResults = if(query.isNotBlank()) {
                     val lowerCaseQuery = query.lowercase(Locale.getDefault())
                     eventList.filter { event ->
                         val nameMatch = event.name?.lowercase(Locale.getDefault())
@@ -115,6 +117,10 @@ class MyEventsViewModel: ViewModel() {
                     }
                 }
                 else eventList
+
+                filteredResults = filteredResults.filter { event ->
+                    event.startTime!! >= com.google.firebase.Timestamp.now()
+                }
 
                 _searchResults.value = filteredResults
                 _searchState.value = DataFetchState(isSuccess = "Data fetched successfully")

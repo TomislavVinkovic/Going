@@ -81,8 +81,7 @@ class MapViewModel : ViewModel() {
                 }
 
                 if (snapshot != null) {
-                    Log.d("EVENTS", "Successfully fetched ${snapshot.size()} documents.")
-                    val eventList = snapshot.documents.mapNotNull { doc ->
+                    var eventList = snapshot.documents.mapNotNull { doc ->
                         val geoPoint = doc.getGeoPoint("location_coords")
                         geoPoint?.let {
                             EventData(
@@ -100,6 +99,10 @@ class MapViewModel : ViewModel() {
                             )
                         }
                     }
+                    eventList = eventList.filter { event ->
+                        event.startTime!! >= com.google.firebase.Timestamp.now()
+                    }
+
                     _events.value = eventList
                 }
             }
