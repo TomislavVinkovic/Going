@@ -18,13 +18,16 @@ import com.example.going.viewmodel.MapViewModel
 import com.example.going.viewmodel.SearchViewModel
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.material3.SnackbarHostState
 
 @Composable
 fun MapScreenNavigation(
-    mapViewModel: MapViewModel
+    mapViewModel: MapViewModel,
+    snackbarHostState: SnackbarHostState,
 ) {
     MapScreenNavHost(
         mapViewModel = mapViewModel,
+        snackbarHostState = snackbarHostState,
         innerPadding = PaddingValues()
     )
 }
@@ -33,6 +36,7 @@ fun MapScreenNavigation(
 @Composable
 fun MapScreenNavHost(
     mapViewModel: MapViewModel,
+    snackbarHostState: SnackbarHostState,
     innerPadding: PaddingValues
 ) {
     val navController = rememberNavController()
@@ -49,6 +53,7 @@ fun MapScreenNavHost(
                 MapScreen(
                     navController=navController,
                     mapViewModel=mapViewModel,
+                    snackBarHostState=snackbarHostState,
                     eventDetailsViewModel=eventDetailsViewModel,
                     sharedTransitionScope = this@SharedTransitionLayout,
                     animatedVisibilityScope = this
@@ -57,7 +62,8 @@ fun MapScreenNavHost(
             composable(MapScreen.EventDetails.route) {
                 EventDetailsScreen(
                     navController=navController,
-                    eventDetailsViewModel,
+                    snackBarHostState=snackbarHostState,
+                    eventDetailsViewModel=eventDetailsViewModel,
                 )
             }
             composable(

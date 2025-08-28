@@ -1,7 +1,5 @@
 package com.example.going.view.common
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -19,7 +17,6 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Place
 import androidx.compose.material.icons.filled.Schedule
@@ -44,9 +41,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavController
 import com.example.going.viewmodel.EventDetailsViewModel
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -63,13 +58,13 @@ import com.google.firebase.Timestamp
 import java.text.SimpleDateFormat
 import coil.compose.AsyncImage
 import com.example.going.model.ProfileUserData
-import com.example.going.view.MapScreen.util.formatTimestamp
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun EventDetailsScreen(
     navController: NavController,
+    snackBarHostState: SnackbarHostState,
     eventDetailsViewModel: EventDetailsViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -78,12 +73,22 @@ fun EventDetailsScreen(
     val isUserInterested by eventDetailsViewModel.isUserInterested.collectAsState()
 
     val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
 
     val eventFetchState by eventDetailsViewModel.eventFetchState.collectAsState()
     val toggleInterestState by eventDetailsViewModel.toggleInterestState.collectAsState()
-    val checkInterestState by eventDetailsViewModel.checkInterestState.collectAsState()
     val userListFetchState by eventDetailsViewModel.userListFetchState.collectAsState()
+
+    LaunchedEffect(toggleInterestState) {
+        if(toggleInterestState.isSuccess != null) {
+            scope.launch {
+                snackBarHostState.showSnackbar(
+                    if (isUserInterested) context.getString(R.string.event_details_screen_interested)
+                    else context.getString(R.string.event_details_screen_uninterested),
+                    duration = SnackbarDuration.Short
+                )
+            }
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -107,13 +112,6 @@ fun EventDetailsScreen(
                     navController.previousBackStackEntry
                         ?.savedStateHandle
                         ?.set("list_should_refresh", true)
-                    scope.launch {
-                        snackbarHostState.showSnackbar(
-                            if (isUserInterested) context.getString(R.string.event_details_screen_interested)
-                            else context.getString(R.string.event_details_screen_uninterested),
-                            duration = SnackbarDuration.Short
-                        )
-                    }
                 },
                 // Change the icon based on the interest state
                 icon = {

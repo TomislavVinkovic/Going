@@ -98,8 +98,6 @@ fun MainAppNavHost(
 ) {
 
     val mapViewModel: MapViewModel = viewModel()
-    val myEventsViewModel: MyEventsViewModel = viewModel()
-
     NavHost(
         navController = navController,
         startDestination = MainScreen.Map.route,
@@ -114,11 +112,14 @@ fun MainAppNavHost(
         // composable(MainScreen.Notifications.route) { NotificationsScreen(navController = navController) }
 
         composable(MainScreen.MyEvents.route) {
-            MyEventsScreenNavigation()
+            MyEventsScreenNavigation(
+                snackbarHostState = snackbarHostState
+            )
         }
         composable(MainScreen.Map.route) {
             MapScreenNavigation(
-                mapViewModel = mapViewModel
+                mapViewModel = mapViewModel,
+                snackbarHostState=snackbarHostState,
             )
         }
 

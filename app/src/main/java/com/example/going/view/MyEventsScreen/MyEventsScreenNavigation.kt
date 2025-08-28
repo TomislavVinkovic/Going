@@ -5,6 +5,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -19,12 +20,20 @@ import com.example.going.viewmodel.MyEventsViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
-fun MyEventsScreenNavigation() {
-    MyEventsScreenNavHost(innerPadding = PaddingValues())
+fun MyEventsScreenNavigation(
+    snackbarHostState: SnackbarHostState
+) {
+    MyEventsScreenNavHost(
+        snackBarHostState=snackbarHostState,
+        innerPadding = PaddingValues()
+    )
 }
 
 @Composable
-fun MyEventsScreenNavHost(innerPadding: PaddingValues) {
+fun MyEventsScreenNavHost(
+    snackBarHostState: SnackbarHostState,
+    innerPadding: PaddingValues
+) {
     val navController = rememberNavController()
     val eventDetailsViewModel: EventDetailsViewModel = viewModel()
     val myEventsViewModel: MyEventsViewModel = viewModel()
@@ -53,7 +62,7 @@ fun MyEventsScreenNavHost(innerPadding: PaddingValues) {
             EventDetailsScreen(
                 navController=navController,
                 eventDetailsViewModel=eventDetailsViewModel,
-
+                snackBarHostState = snackBarHostState
             )
         }
     }
