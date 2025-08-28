@@ -104,6 +104,9 @@ fun EventDetailsScreen(
             ExtendedFloatingActionButton(
                 onClick = {
                     eventDetailsViewModel.toggleInterest(context)
+                    navController.previousBackStackEntry
+                        ?.savedStateHandle
+                        ?.set("list_should_refresh", true)
                     scope.launch {
                         snackbarHostState.showSnackbar(
                             if (isUserInterested) context.getString(R.string.event_details_screen_interested)

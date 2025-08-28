@@ -60,7 +60,15 @@ fun MapScreenNavHost(
                     eventDetailsViewModel,
                 )
             }
-            composable(MapScreen.Search.route) {
+            composable(
+                route = MapScreen.Search.route,
+                enterTransition = {
+                    slideInVertically(initialOffsetY = { it })
+                },
+                popExitTransition = {
+                    slideOutVertically(targetOffsetY = { it })
+                }
+            ) {
                 SearchScreen(
                     navController=navController,
                     searchViewModel=searchViewModel,

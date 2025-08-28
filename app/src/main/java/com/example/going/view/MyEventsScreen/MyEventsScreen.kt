@@ -15,6 +15,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -22,14 +23,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.going.util.MyEventsScreen
 import com.example.going.view.common.CategorySelectorUI
 import com.example.going.view.common.SearchBarUI
+import com.example.going.viewmodel.EventDetailsViewModel
 import com.example.going.viewmodel.MyEventsViewModel
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 fun MyEventsScreen(
     navController: NavController,
+    eventDetailsViewModel: EventDetailsViewModel = viewModel(),
     myEventsViewModel: MyEventsViewModel = viewModel()
 ) {
 
@@ -38,6 +42,20 @@ fun MyEventsScreen(
 
     val searchQuery by myEventsViewModel.searchQuery.collectAsState()
     val selectedCategory by myEventsViewModel.selectedCategory.collectAsState()
+
+    val shouldRefresh = navController.currentBackStackEntry
+        ?.savedStateHandle
+        ?.get<Boolean>("list_should_refresh")
+
+    LaunchedEffect(shouldRefresh) {
+        if (shouldRefresh == true) {
+            myEventsViewModel.refreshEvents()
+            // Important: Clear the result so it doesn't re-trigger
+            navController.currentBackStackEntry
+                ?.savedStateHandle
+                ?.remove<Boolean>("list_should_refresh")
+        }
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -74,13 +92,8 @@ fun MyEventsScreen(
                         headlineContent = {Text(event.name ?: "")},
                         supportingContent = {Text(event.locationName ?: "")},
                         modifier = Modifier.clickable {
-                            navController.previousBackStackEntry
-                                ?.savedStateHandle
-                                ?.set("selected_event_lat", event.position.latitude)
-                            navController.previousBackStackEntry
-                                ?.savedStateHandle
-                                ?.set("selected_event_lng", event.position.longitude)
-                            navController.popBackStack()
+                            eventDetailsViewModel.setEventId(event.id)
+                            navController.navigate(MyEventsScreen.EventDetails.route)
                         }
                     )
                 }

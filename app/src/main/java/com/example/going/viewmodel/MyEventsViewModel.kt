@@ -71,15 +71,20 @@ class MyEventsViewModel: ViewModel() {
 
             viewModelScope.launch {
                 val userInterests = getUserInterests()
+                if(userInterests.isEmpty()) {
+                    _searchResults.value = emptyList()
+                    _searchState.value = DataFetchState(isSuccess = "Data fetched successfully")
+                    return@launch
+                }
                 var eventsQuery: Query = firestore.collection("events")
                 if (category != null) {
                     eventsQuery = eventsQuery.whereEqualTo("category", category)
                 }
-
                 val snapshot = eventsQuery
                     .whereIn(FieldPath.documentId(), userInterests)
                     .get()
                     .await()
+
                 val eventList = snapshot.documents.mapNotNull { doc ->
                     val geoPoint = doc.getGeoPoint("location_coords")
                     geoPoint?.let {
@@ -137,5 +142,9 @@ class MyEventsViewModel: ViewModel() {
             _userInterestsState.value = DataFetchState(isError = e.message)
             emptyList()
         }
+    }
+
+    fun refreshEvents() {
+        searchEvents(searchQuery.value, selectedCategory.value)
     }
 }

@@ -33,6 +33,7 @@ import com.example.going.view.FriendsScreen.FriendsScreen
 import com.example.going.view.MapScreen.MapScreen
 import com.example.going.view.MapScreen.MapScreenNavigation
 import com.example.going.view.MyEventsScreen.MyEventsScreen
+import com.example.going.view.MyEventsScreen.MyEventsScreenNavigation
 import com.example.going.view.NotificationsScreen.NotificationsScreen
 import com.example.going.view.ProfileScreen.ProfileScreenNavigation
 import com.example.going.viewmodel.AuthViewModel
@@ -113,17 +114,13 @@ fun MainAppNavHost(
         // composable(MainScreen.Notifications.route) { NotificationsScreen(navController = navController) }
 
         composable(MainScreen.MyEvents.route) {
-            MyEventsScreen(
-                navController = navController,
-                myEventsViewModel = myEventsViewModel
-            )
+            MyEventsScreenNavigation()
         }
         composable(MainScreen.Map.route) {
             MapScreenNavigation(
                 mapViewModel = mapViewModel
             )
         }
-
 
         // Profile screen routes
         composable(MainScreen.Profile.route) {

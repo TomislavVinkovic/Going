@@ -80,3 +80,14 @@ sealed class MapScreen(
         "map.search"
     )
 }
+
+sealed class MyEventsScreen(
+    val route: String
+) {
+    object MyEvents: MyEventsScreen(
+        "myevents.myevents"
+    )
+    object EventDetails: MyEventsScreen(
+        "myevents.event_details"
+    )
+}
