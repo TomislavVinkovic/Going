@@ -18,8 +18,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -33,6 +36,10 @@ import com.example.going.view.common.SearchBarUI
 import com.example.going.viewmodel.SearchViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
+import com.example.going.R
 import com.example.going.view.common.CategorySelectorUI
 
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalLayoutApi::class)
@@ -83,29 +90,49 @@ fun SearchScreen(
 
         if(searchState.isLoading) {
             Box(
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
             ) {
                 CircularProgressIndicator()
             }
         }
         else {
-            LazyColumn {
-                items(searchResults) { event ->
-                    ListItem(
-                        headlineContent = {Text(event.name ?: "")},
-                        supportingContent = {Text(event.locationName ?: "")},
-                        modifier = Modifier.clickable {
-                            navController.previousBackStackEntry
-                                ?.savedStateHandle
-                                ?.set("selected_event_lat", event.position.latitude)
-                            navController.previousBackStackEntry
-                                ?.savedStateHandle
-                                ?.set("selected_event_lng", event.position.longitude)
-                            navController.previousBackStackEntry
-                                ?.savedStateHandle
-                                ?.set("selected_event_id", event.id)
-                            navController.popBackStack()
-                        }
+            if(searchResults.isNotEmpty()) {
+                LazyColumn {
+                    items(searchResults) { event ->
+                        ListItem(
+                            headlineContent = {Text(event.name ?: "")},
+                            supportingContent = {Text(event.locationName ?: "")},
+                            modifier = Modifier.clickable {
+                                navController.previousBackStackEntry
+                                    ?.savedStateHandle
+                                    ?.set("selected_event_lat", event.position.latitude)
+                                navController.previousBackStackEntry
+                                    ?.savedStateHandle
+                                    ?.set("selected_event_lng", event.position.longitude)
+                                navController.previousBackStackEntry
+                                    ?.savedStateHandle
+                                    ?.set("selected_event_id", event.id)
+                                navController.popBackStack()
+                            },
+                        )
+                        HorizontalDivider()
+                    }
+                }
+            }
+            else if(searchQuery.isNotEmpty() || selectedCategory != null) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        stringResource(R.string.search_no_data),
+                        style = TextStyle(
+                            textAlign = TextAlign.Center,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                        )
                     )
                 }
             }

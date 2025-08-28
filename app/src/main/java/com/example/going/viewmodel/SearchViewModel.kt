@@ -37,6 +37,9 @@ class SearchViewModel: ViewModel() {
     init {
         viewModelScope.launch {
             combine(searchQuery, selectedCategory) { query, category ->
+                if(!query.isEmpty() || category != null) {
+                    _searchState.value = DataFetchState(isLoading = true)
+                }
                 Pair(query, category)
             }.debounce(300)
                 .collect { (query, category) ->
@@ -65,7 +68,6 @@ class SearchViewModel: ViewModel() {
             _searchResults.value = emptyList<EventData>()
             return
         }
-        _searchState.value = DataFetchState(isLoading = true)
 
         var eventsQuery: Query = firestore.collection("events")
         if(category != null) {

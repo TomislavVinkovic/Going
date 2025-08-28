@@ -97,6 +97,12 @@
     <string name="category_conference">Konferencija</string>
     <string name="category_other">Ostalo</string>
 
+    <!-- Search results translations -->
+    <string name="search_no_data">Nema evenata prema uvjetima pretrage</string>
+
+    <!-- My events results translations -->
+    <string name="myevents_no_events">Nema evenata za koje si zainteresiran prema uvjetima pretrage</string>
+
     <!-- Misc strings -->
     <string name="ok">U redu</string>
     <string name="cancel">Otkaži</string>

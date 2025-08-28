@@ -104,6 +104,12 @@
     <string name="category_conference">Conference</string>
     <string name="category_other">Other</string>
 
+    <!-- Search results translations -->
+    <string name="search_no_data">There are no events that meet the given criteria</string>
+
+    <!-- My events results translations -->
+    <string name="myevents_no_events">You have not signed up for any events that meet the given criteria</string>
+
     <!-- Misc strings -->
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
