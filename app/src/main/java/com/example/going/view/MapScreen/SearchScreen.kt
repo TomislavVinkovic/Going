@@ -1,10 +1,12 @@
 package com.example.going.view.MapScreen
 
+import android.R.attr.category
 import androidx.compose.animation.AnimatedVisibilityScope
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.SharedTransitionScope
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
@@ -27,14 +29,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.going.util.CategoryIcons.CategoryIcons
 import com.example.going.view.common.SearchBarUI
 import com.example.going.viewmodel.SearchViewModel
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.focus.FocusRequester
 import com.example.going.view.common.CategorySelectorUI
-import com.example.going.view.util.TranslateCategory
-
 
 @OptIn(ExperimentalSharedTransitionApi::class, ExperimentalLayoutApi::class)
 @Composable
@@ -77,13 +76,17 @@ fun SearchScreen(
 
         CategorySelectorUI(
             selectedCategory=selectedCategory,
-            onClick = { category -> searchViewModel.onCategorySelected(category) }
+            onClick = { searchViewModel.onCategorySelected(it) }
         )
 
         Spacer(Modifier.height(16.dp))
 
         if(searchState.isLoading) {
-            CircularProgressIndicator()
+            Box(
+                modifier = Modifier.fillMaxSize()
+            ) {
+                CircularProgressIndicator()
+            }
         }
         else {
             LazyColumn {

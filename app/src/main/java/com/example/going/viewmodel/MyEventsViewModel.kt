@@ -8,6 +8,7 @@ import com.example.going.model.util.DataFetchState
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.Firebase
 import com.google.firebase.auth.auth
+import com.google.firebase.firestore.FieldPath
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,7 +43,12 @@ class MyEventsViewModel: ViewModel() {
         _searchQuery.value = query
     }
     fun onCategorySelected(category: String) {
-        _selectedCategory.value = category
+        if(_selectedCategory.value == category) {
+            _selectedCategory.value = null
+        }
+        else {
+            _selectedCategory.value = category
+        }
     }
 
     init {
@@ -60,19 +66,20 @@ class MyEventsViewModel: ViewModel() {
         query: String,
         category: String?
     ) {
-        _searchState.value = DataFetchState(isLoading = true)
         try {
             _searchState.value = DataFetchState(isLoading = true)
 
-            // Step 1: Fetch all user interests
             viewModelScope.launch {
                 val userInterests = getUserInterests()
-                val eventsQuery: Query = firestore.collection("events")
+                var eventsQuery: Query = firestore.collection("events")
                 if (category != null) {
-                    eventsQuery.whereEqualTo("category", category)
+                    eventsQuery = eventsQuery.whereEqualTo("category", category)
                 }
 
-                val snapshot = eventsQuery.get().await()
+                val snapshot = eventsQuery
+                    .whereIn(FieldPath.documentId(), userInterests)
+                    .get()
+                    .await()
                 val eventList = snapshot.documents.mapNotNull { doc ->
                     val geoPoint = doc.getGeoPoint("location_coords")
                     geoPoint?.let {
