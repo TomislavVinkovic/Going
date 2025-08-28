@@ -101,6 +101,9 @@ fun SearchScreen(
                             navController.previousBackStackEntry
                                 ?.savedStateHandle
                                 ?.set("selected_event_lng", event.position.longitude)
+                            navController.previousBackStackEntry
+                                ?.savedStateHandle
+                                ?.set("selected_event_id", event.id)
                             navController.popBackStack()
                         }
                     )

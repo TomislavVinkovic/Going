@@ -61,8 +61,10 @@ fun MapScreen(
 ) {
     val cameraPositionState by mapViewModel.cameraPositionState.collectAsStateWithLifecycle()
     val savedStateHandle = navController.currentBackStackEntry?.savedStateHandle
+
     val selectedLat = savedStateHandle?.get<Double>("selected_event_lat")
     val selectedLng = savedStateHandle?.get<Double>("selected_event_lng")
+    val selectedEventId = savedStateHandle?.get<String>("selected_event_id")
 
     val events by mapViewModel.events.collectAsState()
     val sheetState = rememberModalBottomSheetState()
@@ -153,12 +155,19 @@ fun MapScreen(
         }
     }
 
-    LaunchedEffect(selectedLat, selectedLng) {
+    LaunchedEffect(selectedLat, selectedLng, selectedEventId) {
         if(selectedLat != null && selectedLng != null) {
             mapViewModel.moveToLocation(selectedLat, selectedLng)
+            if(selectedEventId != null) {
+                val event = events.find { event -> event.id == selectedEventId }
+                if(event != null) {
+                    selectedEvent = event
+                }
+            }
             // Clear saved state data
             savedStateHandle.remove<Double>("selected_event_lat")
             savedStateHandle.remove<Double>("selected_event_lng")
+            savedStateHandle.remove<String>("selected_event_id")
         }
     }
 
