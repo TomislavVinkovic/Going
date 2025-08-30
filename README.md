@@ -4,7 +4,7 @@
 
 ## **🎥 App Demo**
 
-![Going App Demo GIF](https://i.ibb.co/F4rbMMT8/ezgif-71ee8ed05f83f2.gif)
+![Going App Demo GIF](https://raw.githubusercontent.com/TomislavVinkovic/Going/refs/heads/main/showcase.gif)
 
 ## **✨ Features**
 
