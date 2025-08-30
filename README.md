@@ -117,4 +117,4 @@ Contributions are welcome\! If you have suggestions or want to improve the app, 
 
 ## **📄 License**
 
-This project is licensed under the MIT License \- see the [LICENSE.md](http://docs.google.com/LICENSE.md) file for details.
+This project is licensed under the MIT License \- see the [LICENSE.md](https://github.com/TomislavVinkovic/Going/blob/main/LICENSE) file for details.
